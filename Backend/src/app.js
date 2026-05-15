@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoute.js";
 import transactionRoutes from "./routes/transactionRoute.js";
+import categoryRoutes from "./routes/categoryRoute.js";
+import budgetRoutes from "./routes/budgetRoute.js";
 
 dotenv.config();
 
@@ -18,6 +20,8 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/budget", budgetRoutes);
 
 
 export default app;
