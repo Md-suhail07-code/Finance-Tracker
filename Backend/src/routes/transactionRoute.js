@@ -1,10 +1,24 @@
 import express from "express";
 import protect from "../middleware/authMiddleware.js";
-import { createTransaction, getTransactions, updateTransaction, deleteTransaction } from "../controllers/transactionController.js";
+import { 
+  createTransaction, 
+  getTransactions, 
+  getTransactionById, 
+  updateTransaction, 
+  deleteTransaction 
+} from "../controllers/transactionController.js";
 
 const router = express.Router();
 
-router.get("/", protect, createTransaction);
-router.get("/", protect, getTransactions);
-router.put("/:id", protect, updateTransaction);
-router.delete("/:id", protect, deleteTransaction);
+router.use(protect);
+
+router.route("/")
+  .post(createTransaction)
+  .get(getTransactions);
+
+router.route("/:id")
+  .get(getTransactionById)
+  .put(updateTransaction)
+  .delete(deleteTransaction);
+
+export default router;

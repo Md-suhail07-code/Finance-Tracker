@@ -11,6 +11,13 @@ export const createCategory = async (req, res) => {
             })
         }
 
+        const existingCategory = await prisma.category.findFirst({
+            where: {
+                name,
+                userId: req.user.id
+            }
+        })
+
         const category = await prisma.category.create({
             data: {
                 name,
@@ -62,7 +69,7 @@ export const updateCategory = async (req, res) => {
         const { name, icon } = req.body;
 
         const category = await prisma.category.findUnique({
-            where: { id: parseInt(id) }
+            where: { id }
         })
 
         if(!category){
@@ -80,7 +87,7 @@ export const updateCategory = async (req, res) => {
         }
 
         const updatedCategory = await prisma.category.update({
-            where: { id: parseInt(id) },
+            where: { id },
             data: { name, icon }
         })
 
@@ -104,7 +111,7 @@ export const deleteCategory = async (req, res) => {
         const { id } = req.params;
 
         const category = await prisma.category.findUnique({
-            where: { id: parseInt(id) }
+            where: { id }
         })
 
         if(!category){
@@ -122,7 +129,7 @@ export const deleteCategory = async (req, res) => {
         }
 
         await prisma.category.delete({
-            where: { id: parseInt(id) }
+            where: { id }
         })
 
         return res.status(200).json({

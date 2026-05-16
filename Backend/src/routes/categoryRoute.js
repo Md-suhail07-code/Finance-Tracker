@@ -4,9 +4,14 @@ import { createCategory, getCategories, updateCategory, deleteCategory } from ".
 
 const router = express.Router();
 
-router.post("/", protect, createCategory);
-router.get("/", protect, getCategories);
-router.put("/:id", protect, updateCategory);
-router.delete("/:id", protect, deleteCategory);
+router.use(protect);
+
+router.route("/")
+    .post(createCategory)
+    .get(getCategories);
+
+router.route("/:id")
+    .put(updateCategory)
+    .delete(deleteCategory);
 
 export default router;

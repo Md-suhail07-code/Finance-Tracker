@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.js";
 
 const protect = async (req, res, next) => {
     try{
@@ -10,7 +10,6 @@ const protect = async (req, res, next) => {
                 message: "No token provided, authorization denied"
             })
         }
-
         const token = authHeader.split(" ")[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await prisma.user.findUnique({

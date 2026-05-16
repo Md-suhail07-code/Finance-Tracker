@@ -10,6 +10,14 @@ export const createBudget = async (req, res) => {
       });
     }
 
+    const monthRegex = /^\d{4}-(0[1-9]|1[0-2])$/;
+    if (!monthRegex.test(month)) {
+      return res.status(400).json({
+        success: false,
+        message: "Month must be in YYYY-MM format (e.g., 2026-05)",
+      });
+    }
+
     const existingBudget = await prisma.budget.findFirst({
       where: {
         userId: req.user.id,
@@ -33,9 +41,9 @@ export const createBudget = async (req, res) => {
     });
 
     return res.status(201).json({
-        success: true,
-        message: "Budget created successfully",
-        budget
+      success: true,
+      message: "Budget created successfully",
+      budget,
     });
   } catch (error) {
     return res.status(500).json({
@@ -44,123 +52,141 @@ export const createBudget = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
 
-export const getBudget = async (req, res) => {
-    try{
-        const { month } = req.query;
-        if(!month){
-            return res.status(400).json({
-                success: false,
-                message: "Month is required"
-            })
-        }
-
-        const budget = await prisma.budget.findFirst({
-            where: {
-                userId: req.user.id,
-                month
-            }
-        })
-
-        if(!budget){
-            return res.status(404).json({
-                success: false,
-                message: "Budget not found for this month"
-            })
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "Budget fetched successfully",
-            budget
-        })
+export const getBudgetByMonth = async (req, res) => {
+  try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({
+        success: false,
+        message: "Month is required",
+      });
     }
-    catch(error){
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server error",
-            error: error.message
-        })
+
+    const budget = await prisma.budget.findFirst({
+      where: {
+        userId: req.user.id,
+        month,
+      },
+    });
+
+    if (!budget) {
+      return res.status(404).json({
+        success: false,
+        message: "Budget not found for this month",
+      });
     }
-}
+
+    return res.status(200).json({
+      success: true,
+      message: "Budget fetched successfully",
+      budget,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server error",
+      error: error.message,
+    });
+  }
+};
 
 export const updateBudget = async (req, res) => {
-    try{
-        const { month } = req.query;
-        const { amount } = req.body;
-        if(!month || !amount){
-            return res.status(400).json({
-                success: false,
-                message: "Month and amount are required"
-            })
-        }
-
-        const budget = await prisma.budget.findFirst({
-            where: {
-                userId: req.user.id,
-                month
-            }
-        })
-
-        if(!budget){
-            return res.status(404).json({
-                success: false,
-                message: `Budget not found for ${month} month`
-            })
-        }
-        const updatedBudget = await prisma.budget.update({
-            where: { id: budget.id },
-            data: { amount }
-        })
-
-        return res.status(200).json({
-            success: true,
-            message: "Budget updated successfully",
-            budget: updatedBudget
-        })
-
+  try {
+    const { month } = req.query;
+    const { amount } = req.body;
+    if (!month || amount == undefined) {
+      return res.status(400).json({
+        success: false,
+        message: "Month and amount are required",
+      });
     }
-    catch(error){
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server error",
-            error: error.message
-        })
+
+    const budget = await prisma.budget.findFirst({
+      where: {
+        userId: req.user.id,
+        month,
+      },
+    });
+
+    if (!budget) {
+      return res.status(404).json({
+        success: false,
+        message: `Budget not found for ${month} month`,
+      });
     }
-}
+    const updatedBudget = await prisma.budget.update({
+      where: { id: budget.id },
+      data: { amount },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Budget updated successfully",
+      budget: updatedBudget,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server error",
+      error: error.message,
+    });
+  }
+};
 
 export const deleteBudget = async (req, res) => {
+  try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({
+        success: false,
+        message: "Month is required",
+      });
+    }
+
+    const budget = await prisma.budget.findFirst({
+      where: {
+        userId: req.user.id,
+        month,
+      },
+    });
+
+    if (!budget) {
+      return res.status(404).json({
+        success: false,
+        message: `Budget not found for ${month} month`,
+      });
+    }
+
+    await prisma.budget.delete({
+      where: { id: budget.id },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Budget deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server error",
+      error: error.message,
+    });
+  }
+};
+
+export const getAllBudgets = async (req, res) => {
     try{
-        const { month } = req.query;
-        if(!month){
-            return res.status(400).json({
-                success: false,
-                message: "Month is required"
-            })
-        }
-
-        const budget = await prisma.budget.findFirst({
-            where: {
-                userId: req.user.id,
-                month
-            }
-        })
-
-        if(!budget){
-            return res.status(404).json({
-                success: false,
-                message: `Budget not found for ${month} month`
-            })
-        }
-
-        await prisma.budget.delete({
-            where: { id: budget.id }
-        })
+        const budgets = await prisma.budget.findMany({
+            where: { userId: req.user.id },
+            orderBy: { month: "desc" }
+        });
 
         return res.status(200).json({
             success: true,
-            message: "Budget deleted successfully"
+            message: "Budgets fetched successfully",
+            budgets
         })
     }
     catch(error){
@@ -170,4 +196,4 @@ export const deleteBudget = async (req, res) => {
             error: error.message
         })
     }
-}
+};

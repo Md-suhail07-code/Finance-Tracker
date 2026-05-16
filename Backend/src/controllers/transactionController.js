@@ -58,8 +58,9 @@ export const getTransactions = async (req, res) => {
 export const updateTransaction = async (req, res) => {
     try{
         const { id } = req.params;
+        const { title, amount, type, categoryId, date, description } = req.body;
         const transaction = await prisma.transaction.findUnique({
-            where: { id: parseInt(id) }
+            where: { id }
         })
 
         if(!transaction){
@@ -78,7 +79,14 @@ export const updateTransaction = async (req, res) => {
 
         const updatedTransaction = await prisma.transaction.update({
             where: { id },
-            data: req.body
+            data: {
+                title,
+                amount,
+                type,
+                description,
+                date: new Date(date),
+                categoryId
+            }
         })
 
         return res.status(200).json({
@@ -100,7 +108,7 @@ export const deleteTransaction = async (req, res) => {
     try{
         const { id } = req.params;
         const transaction = await prisma.transaction.findUnique({
-            where: { id: parseInt(id) }
+            where: { id }
         })
 
         if(!transaction){
@@ -124,6 +132,43 @@ export const deleteTransaction = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Transaction deleted successfully"
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error",
+            error: error.message
+        })
+    }
+}
+
+export const getTransactionById = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const transaction = await prisma.transaction.findUnique({
+            where: { id },
+            include: { category: true }
+        })
+
+        if(!transaction){
+            return res.status(404).json({
+                success: false,
+                message: "Transaction not found"
+            })
+        }
+
+        if(transaction.userId !== req.user.id){
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized to view this transaction"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Transaction fetched successfully",
+            transaction
         })
     }
     catch(error){

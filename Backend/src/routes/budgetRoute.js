@@ -1,12 +1,19 @@
 import express from "express";
 import protect from "../middleware/authMiddleware.js";
-import { createBudget, getBudget, deleteBudget, updateBudget } from "../controllers/budgetController.js";
+import { createBudget, getBudgetByMonth, getAllBudgets, deleteBudget, updateBudget } from "../controllers/budgetController.js";
 
 const router = express.Router();
 
-router.post("/", protect, createBudget);
-router.get("/", protect, getBudget);
-router.delete("/:id", protect, deleteBudget);
-router.put("/:id", protect, updateBudget);
+router.use(protect);
+
+router.route("/")
+    .post(createBudget)
+    .get(getAllBudgets);
+
+router.route("/:id")
+    .put(updateBudget)
+    .delete(deleteBudget);
+
+router.get("/month", getBudgetByMonth);
 
 export default router;
