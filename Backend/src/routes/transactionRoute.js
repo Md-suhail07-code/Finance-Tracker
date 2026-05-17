@@ -3,7 +3,9 @@ import protect from "../middleware/authMiddleware.js";
 import { 
   createTransaction, 
   getTransactions, 
-  getTransactionById, 
+  getTransactionById,
+  getRecentTransactions,
+  getTransactionsByCategory,
   updateTransaction, 
   deleteTransaction 
 } from "../controllers/transactionController.js";
@@ -20,5 +22,8 @@ router.route("/:id")
   .get(getTransactionById)
   .put(updateTransaction)
   .delete(deleteTransaction);
+
+router.get("/recent", getRecentTransactions);
+router.get("/:categoryId", getTransactionsByCategory);
 
 export default router;
