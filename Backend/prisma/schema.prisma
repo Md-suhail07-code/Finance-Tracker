@@ -4,7 +4,7 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -23,6 +23,7 @@ model User {
   transactions Transaction[]
   budgets      Budget[]
   aiInsights   AIInsight[]
+  categories   Category[]
 }
 
 enum TransactionType {
@@ -50,6 +51,9 @@ model Category {
   id   String  @id @default(cuid())
   name String  @unique
   icon String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   transactions Transaction[]
 }
