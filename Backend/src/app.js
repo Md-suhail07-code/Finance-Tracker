@@ -5,6 +5,8 @@ import authRoutes from "./routes/authRoute.js";
 import transactionRoutes from "./routes/transactionRoute.js";
 import categoryRoutes from "./routes/categoryRoute.js";
 import budgetRoutes from "./routes/budgetRoute.js";
+import analyticRoutes from "./routes/analyticRoutes.js";
+import aiRoutes from "./routes/aiRoute.js";
 
 dotenv.config();
 
@@ -22,6 +24,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/budget", budgetRoutes);
+app.use("/api/analytics", analyticRoutes);
+app.use("/api/ai", aiRoutes);
 
 
 export default app;
