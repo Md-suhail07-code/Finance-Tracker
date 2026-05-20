@@ -3,28 +3,36 @@ import Logo from "../assets/finTrack_Logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config/api.ts";
+import { useAppDispatch } from "@/redux/hooks/reduxHooks.ts";
+import { loginSucess } from "@/redux/features/auth/authSlice.ts";
+import { toast } from "sonner";
+import { Loader } from "lucide-react";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const API_URL = API_BASE_URL + "/auth/login";
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setLoading(true);
-      // const res = axios.post(API_URL, { email, password });
-      // if(res.status === 200) {
-
-      // }
+      const res = await axios.post(API_URL, { email, password });
+      if (res.status === 200) {
+        dispatch(loginSucess({ user: res.data.user, token: res.data.token }));
+        toast.success("Login successful! Redirecting to dashboard...");
+        navigate("/dashboard");
+      }
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error("Login failed. Please check your credentials and try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -135,7 +143,9 @@ const Login: React.FC = () => {
             type="submit"
             className="w-full mt-2 py-4 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 text-zinc-950 rounded-2xl font-bold text-sm tracking-wide active:scale-[0.99] transition-all duration-150 shadow-[0_8px_32px_0_rgba(5,255,155,0.2)]"
           >
-            Login
+            {loading ? (
+              <Loader className="animate-spin text-zinc-950 mx-auto" size={20} />
+            ) : "Log In"}
           </button>
         </form>
 
