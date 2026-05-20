@@ -1,16 +1,31 @@
 ﻿import React, { useState } from "react";
 import Logo from "../assets/finTrack_Logo.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_BASE_URL } from "../config/api.ts";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
+  const API_URL = API_BASE_URL + "/auth/login";
+
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      setLoading(true);
+      // const res = axios.post(API_URL, { email, password });
+      // if(res.status === 200) {
+
+      // }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -35,7 +50,7 @@ const Login: React.FC = () => {
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500/50 via-teal-400 to-cyan-500/50 opacity-70"></div>
 
         {/* Header / Logo section */}
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-8 text-center">
           <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center shadow-lg shadow-emerald-500/10 mb-4 transition-transform duration-300 hover:scale-105 overflow-hidden">
             <img
               src={Logo}
@@ -43,9 +58,10 @@ const Login: React.FC = () => {
               className="w-10 h-10 object-contain opacity-90"
             />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-white flex gap-2 items-center">
+          {/* FIXED: Added text-xl for tiny screens, scaling smoothly to sm:text-2xl */}
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap">
             Welcome to{" "}
-            <span className="text-2xl font-bold uppercase tracking-widest text-emerald-400">
+            <span className="uppercase tracking-widest text-emerald-400">
               FinTrack
             </span>
           </h2>
@@ -107,7 +123,9 @@ const Login: React.FC = () => {
                 className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-emerald-500 hover:text-emerald-400 transition duration-150 z-10 bg-transparent border-0 cursor-pointer"
               >
                 {/* Fixed utilizing FontAwesome icons directly instead of Lucide elements */}
-                <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"} text-sm`}></i>
+                <i
+                  className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"} text-sm`}
+                ></i>
               </button>
             </div>
           </div>
