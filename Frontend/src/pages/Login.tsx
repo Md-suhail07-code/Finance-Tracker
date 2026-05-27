@@ -6,7 +6,7 @@ import { API_BASE_URL } from "../config/api.ts";
 import { useAppDispatch } from "@/redux/hooks/reduxHooks.ts";
 import { loginSucess } from "@/redux/features/auth/authSlice.ts";
 import { toast } from "sonner";
-import { Loader } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -130,10 +130,7 @@ const Login: React.FC = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-emerald-500 hover:text-emerald-400 transition duration-150 z-10 bg-transparent border-0 cursor-pointer"
               >
-                {/* Fixed utilizing FontAwesome icons directly instead of Lucide elements */}
-                <i
-                  className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"} text-sm`}
-                ></i>
+                {showPassword ? <Eye /> : <EyeOff />}
               </button>
             </div>
           </div>
