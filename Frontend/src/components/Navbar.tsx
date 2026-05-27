@@ -13,21 +13,24 @@ import {
 import { logout } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks/reduxHooks.ts";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom"; // 1. Imported useLocation and Link
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const activePath = "/dashboard";
+  
+  const location = useLocation(); // 2. Get the current location object
+  const activePath = location.pathname; // 3. Dynamically set active path
+  
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const navigationLinks = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutGrid },
-    { name: "Transactions", path: "/transactions", icon: ArrowLeftRight },
-    { name: "Budgets", path: "/budgets", icon: Wallet },
-    { name: "Analytics", path: "/analytics", icon: TrendingUp },
     { name: "Categories", path: "/categories", icon: FolderTree },
+    { name: "Budgets", path: "/budgets", icon: Wallet },
+    { name: "Transactions", path: "/transactions", icon: ArrowLeftRight },
+    { name: "Analytics", path: "/analytics", icon: TrendingUp },
   ];
 
   const handleLogout = () => {
@@ -48,7 +51,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left Side: Brand Logo and Text Alignment */}
-          <div className="flex items-center gap-3 cursor-pointer group">
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate("/dashboard")}>
             <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center shadow-md shadow-emerald-500/5 transition-transform duration-300 group-hover:scale-105 overflow-hidden">
               <img
                 src={Logo}
@@ -65,12 +68,12 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center gap-1.5">
             {navigationLinks.map((link) => {
               const isActive = activePath === link.path;
-              const IconComponent = link.icon; // Assign to an uppercase variable to render as a component
+              const IconComponent = link.icon;
 
               return (
-                <a
+                <Link
                   key={link.path}
-                  href={link.path}
+                  to={link.path}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 ${
                     isActive
                       ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(5,255,155,0.05)]"
@@ -79,7 +82,7 @@ const Navbar: React.FC = () => {
                 >
                   <IconComponent className="w-3.5 h-3.5" />
                   {link.name}
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -128,13 +131,13 @@ const Navbar: React.FC = () => {
           {/* Mobile Specific App Navigation Nodes */}
           {navigationLinks.map((link) => {
             const isActive = activePath === link.path;
-            const IconComponent = link.icon; // Assign to an uppercase variable to render as a component
+            const IconComponent = link.icon; 
 
             return (
-              <a
+              <Link
                 key={link.path}
-                href={link.path}
-                onClick={() => handleLogout()}
+                to={link.path} // 5. Changed href to to
+                onClick={() => setIsMobileMenuOpen(false)} // 6. Fixed: Close menu instead of logging out!
                 className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition duration-150 ${
                   isActive
                     ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"
@@ -143,7 +146,7 @@ const Navbar: React.FC = () => {
               >
                 <IconComponent className="w-4 h-4 shrink-0" />
                 {link.name}
-              </a>
+              </Link>
             );
           })}
 
