@@ -1,13 +1,52 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import authReducer from "../features/auth/authSlice";
 import transactionReducer from "../features/transaction/transactionSlice";
+import categoryReducer from "../features/category/categorySlice";
+import budgetReducer from "../features/budget/budgetSlice";
+
+let storageEngine: any = storage;
+if (!storageEngine || typeof storageEngine.getItem !== "function") {
+  if (storageEngine && typeof storageEngine.default === "object" && typeof storageEngine.default.getItem === "function") {
+    storageEngine = storageEngine.default;
+  } else {
+    console.warn("redux-persist storage engine missing getItem; found:", storageEngine);
+  }
+}
+
+const persistConfig = {
+  key: "root",
+  storage: storageEngine,
+};
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  transactions: transactionReducer,
+  categories: categoryReducer,
+  budgets: budgetReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        transactions: transactionReducer,
-    }
-})
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [
+                    "persist/PERSIST",
+                    "persist/REHYDRATE",
+                    "persist/PAUSE",
+                    "persist/PURGE",
+                    "persist/REGISTER",
+                    "persist/FLUSH"
+                ],
+            },
+        }),
+});
+
+// Create the persistor on the client where `window`/`localStorage` exist.
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
