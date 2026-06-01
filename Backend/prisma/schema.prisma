@@ -22,6 +22,7 @@ model User {
 
   transactions Transaction[]
   budgets      Budget[]
+  categoryBudgets categoryBudget[]
   aiInsights   AIInsight[]
   categories   Category[]
 }
@@ -49,11 +50,13 @@ model Transaction {
 
 model Category {
   id   String  @id @default(cuid())
-  name String  @unique
+  name String
   icon String?
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  categoryBudgets categoryBudget[]
 
   transactions Transaction[]
 }
@@ -65,6 +68,20 @@ model Budget {
 
   userId     String
   user       User @relation(fields: [userId], references: [id])
+
+  createdAt  DateTime @default(now())
+}
+
+model categoryBudget {
+  id         String   @id @default(cuid())
+  amount     Decimal  @db.Decimal(10,2)
+  month      String
+
+  userId     String
+  user       User @relation(fields: [userId], references: [id])
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
 
   createdAt  DateTime @default(now())
 }
