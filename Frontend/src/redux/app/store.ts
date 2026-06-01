@@ -5,6 +5,7 @@ import authReducer from "../features/auth/authSlice";
 import transactionReducer from "../features/transaction/transactionSlice";
 import categoryReducer from "../features/category/categorySlice";
 import budgetReducer from "../features/budget/budgetSlice";
+import categoryBudgetReducer from "../features/categoryBudget/categoryBudgetSlice";
 
 let storageEngine: any = storage;
 if (!storageEngine || typeof storageEngine.getItem !== "function") {
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   transactions: transactionReducer,
   categories: categoryReducer,
   budgets: budgetReducer,
+  categoryBudgets: categoryBudgetReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -46,7 +48,6 @@ export const store = configureStore({
         }),
 });
 
-// Create the persistor on the client where `window`/`localStorage` exist.
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
