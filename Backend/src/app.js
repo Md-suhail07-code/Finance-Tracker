@@ -7,6 +7,7 @@ import categoryRoutes from "./routes/categoryRoute.js";
 import budgetRoutes from "./routes/budgetRoute.js";
 import analyticRoutes from "./routes/analyticRoutes.js";
 import aiRoutes from "./routes/aiRoute.js";
+import categoryBudgetRoutes from "./routes/categoryBudgetRoutes.js";
 
 dotenv.config();
 
@@ -23,9 +24,10 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/categories", categoryRoutes);
-app.use("/api/budget", budgetRoutes);
+app.use("/api/budgets", budgetRoutes);
 app.use("/api/analytics", analyticRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/category-budgets", categoryBudgetRoutes);
 
 
 export default app;
