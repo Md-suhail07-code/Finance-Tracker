@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import Logo from "../assets/finTrack_Logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -19,11 +19,13 @@ const Login: React.FC = () => {
 
   const user = useAppSelector((state) => state.auth.user);
 
-  if(user){
-    toast.success("You are already logged in");
-    navigate("/dashboard");
-    return;
-  }
+  useEffect(() => {
+    if(user){
+      toast.success("You are already logged in");
+      navigate("/dashboard");
+      return;
+    }
+  }, [user, navigate]);
 
   const API_URL = API_BASE_URL + "/auth/login";
 
