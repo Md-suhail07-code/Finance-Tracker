@@ -3,7 +3,7 @@ import Logo from "../assets/finTrack_Logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config/api.ts";
-import { useAppDispatch } from "@/redux/hooks/reduxHooks.ts";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/reduxHooks.ts";
 import { loginSucess } from "@/redux/features/auth/authSlice.ts";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader } from "lucide-react";
@@ -15,9 +15,17 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
-  const API_URL = API_BASE_URL + "/auth/login";
-
   const navigate = useNavigate();
+
+  const user = useAppSelector((state) => state.auth.user);
+
+  if(user){
+    toast.success("You are already logged in");
+    navigate("/dashboard");
+    return;
+  }
+
+  const API_URL = API_BASE_URL + "/auth/login";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
