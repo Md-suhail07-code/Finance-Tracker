@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAppSelector } from "@/redux/hooks/reduxHooks";
+import { store } from "@/redux/app/store";
 
 export const API_BASE_URL: string = "http://localhost:5000/api";
 
@@ -8,7 +8,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = useAppSelector((state) => state.auth.token);
+  const token = store.getState().auth.token;
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
