@@ -46,7 +46,6 @@ const Categories: React.FC = () => {
   const { categories } = useAppSelector((state: RootState) => state.categories);
   const API_URL = `${API_BASE_URL}/categories`;
 
-  // Fetch categories on mount
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -54,7 +53,7 @@ const Categories: React.FC = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data.success) {
-          dispatch(setCategories(res.data.categories)); // expects array
+          dispatch(setCategories(res.data.categories));
         }
       } catch (error) {
         toast.error("Failed to fetch categories");
@@ -63,7 +62,6 @@ const Categories: React.FC = () => {
     if (token) fetchCategories();
   }, [token, dispatch]);
 
-  // Create handler
   const handleCreateCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return toast.error("Name is required");
@@ -88,7 +86,6 @@ const Categories: React.FC = () => {
     }
   };
 
-  // Delete handler
   const handleDeleteCategory = async (id: string) => {
     try {
       const res = await axios.delete(`${API_URL}/${id}`, {
@@ -103,14 +100,12 @@ const Categories: React.FC = () => {
     }
   };
 
-  // Enable inline editing mode
   const startEditing = (category: Category) => {
     setEditingId(category.id);
     setEditName(category.name);
     setEditIcon(category.icon || "");
   };
 
-  // Save updated category
   const handleUpdateCategory = async (id: string) => {
     if (!editName.trim()) return toast.error("Name is required");
 
@@ -156,9 +151,9 @@ const Categories: React.FC = () => {
         {/* Upper Heading Contextual Bar */}
         <section className="pb-2">
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-            Category{" "}
+            Manage your{" "}
             <span className="text-emerald-400 font-mono tracking-normal">
-              Taxonomy
+              Categories
             </span>
           </h1>
           <p className="text-xs text-zinc-400 mt-1">
@@ -221,14 +216,14 @@ const Categories: React.FC = () => {
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h2 className="text-sm font-bold uppercase tracking-wider text-white">
-                  Registered Taxonomies
+                  Registered Categories
                 </h2>
                 <p className="text-[11px] text-zinc-400 mt-0.5">
-                  Active classification map modules
+                  Active categories for your transactions
                 </p>
               </div>
               <span className="text-[10px] font-bold font-mono bg-white/5 px-2.5 py-1 rounded-md border border-white/5 text-zinc-400">
-                {categories.length} Nodes
+                {categories.length} Categories
               </span>
             </div>
 
@@ -238,7 +233,7 @@ const Categories: React.FC = () => {
                 <div className="flex flex-col items-center justify-center text-center p-8 border border-dashed border-white/5 rounded-xl bg-black/20">
                   <FolderTree className="w-8 h-8 text-zinc-600 mb-2" />
                   <p className="text-xs font-medium text-zinc-500">
-                    No active category added yet.
+                    No categories added yet.
                   </p>
                 </div>
               ) : (
