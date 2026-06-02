@@ -11,6 +11,20 @@ export const createCategoryBudget = async (req, res) => {
       });
     }
 
+    const category = await prisma.category.findFirst({
+      where: {
+        id: categoryId,
+        userId: req.user.id,
+      },
+    });
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
     const categoryBudget = await prisma.categoryBudget.findFirst({
       where: {
         userId: req.user.id,
@@ -38,7 +52,13 @@ export const createCategoryBudget = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Category budget created successfully",
-      categoryBudget: newCategoryBudget,
+      categoryBudget: {
+        ...newCategoryBudget,
+        category: {
+          id: categoryId,
+          name: category.name,
+        },
+      },
     });
   } catch (error) {
     return res.status(500).json({
