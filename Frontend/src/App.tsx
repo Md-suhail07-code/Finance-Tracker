@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import Categories from "./pages/Categories";
 import Budgets from "./pages/Budgets";
+import Transactions from "./pages/Transactions";
 
 const App = () => {
   return (
@@ -37,6 +38,15 @@ const App = () => {
             <>
               <Navbar />
               <Budgets />
+            </>
+          }
+        />
+        <Route
+          path="/transactions"
+          element={
+            <>
+              <Navbar />
+              <Transactions />
             </>
           }
         />
