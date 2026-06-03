@@ -29,6 +29,18 @@ const transactionSlice = createSlice({
       state.transactions.unshift(action.payload)
     },
 
+    updateTransaction: (
+      state,
+      action: PayloadAction<Transaction>
+    ) => {
+      state.transactions = state.transactions.map(
+        (transaction: Transaction) =>
+          transaction.id === action.payload.id
+            ? action.payload
+            : transaction
+      )
+    },
+
     deleteTransaction: (
       state,
       action: PayloadAction<string>
@@ -44,6 +56,7 @@ const transactionSlice = createSlice({
 export const {
   setTransactions,
   addTransaction,
+  updateTransaction,
   deleteTransaction,
 } = transactionSlice.actions
 
