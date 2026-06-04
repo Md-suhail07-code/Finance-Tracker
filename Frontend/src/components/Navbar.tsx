@@ -6,21 +6,20 @@ import {
   LayoutGrid,
   ArrowLeftRight,
   Wallet,
-  TrendingUp,
   FolderTree,
   Loader,
 } from "lucide-react";
 import { logout } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks/reduxHooks.ts";
 import { toast } from "sonner";
-import { useNavigate, useLocation, Link } from "react-router-dom"; // 1. Imported useLocation and Link
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   
-  const location = useLocation(); // 2. Get the current location object
-  const activePath = location.pathname; // 3. Dynamically set active path
+  const location = useLocation();
+  const activePath = location.pathname;
   
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -30,7 +29,6 @@ const Navbar: React.FC = () => {
     { name: "Categories", path: "/categories", icon: FolderTree },
     { name: "Budgets", path: "/budgets", icon: Wallet },
     { name: "Transactions", path: "/transactions", icon: ArrowLeftRight },
-    { name: "Analytics", path: "/analytics", icon: TrendingUp },
   ];
 
   const handleLogout = () => {
