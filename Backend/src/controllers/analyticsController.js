@@ -7,7 +7,7 @@ export const getAnalytics = async (req, res) => {
     const monthNum = now.getMonth() + 1;
 
     const month = `${year}-${String(monthNum).padStart(2, '0')}`;
-    
+
     const startDate = new Date(year, monthNum - 1, 1);
     const endDate = new Date(year, monthNum, 1);
 
@@ -86,6 +86,43 @@ export const getAnalytics = async (req, res) => {
       },
     });
   } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server error",
+      error: error.message,
+    });
+  }
+};
+
+export const monthlyComparision = async (req, res) => {
+  try{
+    const year = new Date().getFullYear();
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId: req.user.id,
+      }
+    });
+
+    const monthlyData = Array(12).fill(0).map(() => ({ income: 0, expense: 0 }));
+
+    transactions.forEach((transaction) => {
+      const month = transaction.date.getMonth();
+      const amount = Number(transaction.amount);
+      if (transaction.type === "INCOME") {
+        monthlyData[month].income += amount;
+      } else {
+        monthlyData[month].expense += amount;
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Monthly comparison fetched successfully",
+      monthlyData,
+    });
+  }
+  catch (error) {
     return res.status(500).json({
       success: false,
       message: "Internal Server error",
