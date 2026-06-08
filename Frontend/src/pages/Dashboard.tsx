@@ -11,6 +11,10 @@ import {
   BarChart2,
   Loader2,
 } from "lucide-react";
+import CategoryDistribution from "@/components/CategoryDistribution";
+import BudgetPerformance from "@/components/BudgetPerformance";
+import MonthlyTrendChart from "@/components/MonthlyTrendChart";
+import RecentTransactions from "@/components/RecentTransactions";
 
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +28,9 @@ const Dashboard: React.FC = () => {
     recentTransactions: [],
   });
   const [monthlyComparison, setMonthlyComparison] = useState([]);
+  const [categoryDistribution, setCategoryDistribution] = useState([]);
+  const [budgetPerformance, setBudgetPerformance] = useState([]);
+  const [spendingTrend, setSpendingTrend] = useState([]);
 
   const fetchAnalytics = async () => {
     try {
@@ -41,6 +48,7 @@ const Dashboard: React.FC = () => {
   };
 
   const fetchMonthlyComparison = async () => {
+    setLoading(true);
     try {
       const res = await api.get("/analytics/monthly-comparison");
       if (res.status === 200) {
@@ -50,11 +58,65 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       toast.error("Failed to fetch monthly comparison data. Please try again later.");
     }
+    finally{
+      setLoading(false);
+    }
   };
+
+  const fetchCategoryDistribution = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get("/analytics/category-distribution");
+      if(res.status === 200) {
+        setCategoryDistribution(res.data.categoryDistribution || []);
+        toast.success("Category distribution data fetched successfully!");
+      }
+    } catch (error) {
+      toast.error("Failed to fetch category distribution data. Please try again later.");
+    }
+    finally{
+      setLoading(false);
+    }
+  };
+
+  const fetchBudgetPerformance = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get("analytics/budget-performance")
+      if(res.status === 200){
+        setBudgetPerformance(res.data.budgetPerformance)
+        toast.success("Budget Performance fetched successfully")
+      }
+    } catch (error) {
+      toast.error("Failed to fetch Budget Performance")
+    }
+    finally{
+      setLoading(false);
+    }
+  }
+
+  const fetchSpendingTrend = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/analytics/spending-trend");
+      if(res.status === 200){
+        setSpendingTrend(res.data.monthlyTrend);
+        toast.success("Spending trend fetched successfully");
+      }
+    } catch (error) {
+      toast.error("Failed to fetch Spending Trend")
+    }
+    finally{
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     fetchAnalytics();
     fetchMonthlyComparison();
+    fetchCategoryDistribution();
+    fetchBudgetPerformance();
+    fetchSpendingTrend();
   }, []);
 
   const summaryData = [
@@ -99,8 +161,16 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
 
-        <div className="w-full">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
           <MonthlyComparisonChart data={monthlyComparison} />
+          <CategoryDistribution data={categoryDistribution} />
+        </div>
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <BudgetPerformance data={budgetPerformance} />
+          <MonthlyTrendChart data={spendingTrend} />
+        </div>
+        <div>
+          <RecentTransactions data={analytics.recentTransactions} />
         </div>
       </div>
     </div>
