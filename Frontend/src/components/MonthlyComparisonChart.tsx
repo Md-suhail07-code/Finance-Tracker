@@ -102,7 +102,7 @@ const MonthlyComparisonChart: React.FC<MonthlyComparisonChartProps> = ({ data })
           </div>
 
           {/* Dynamic Graph Pillars Data Mapping Element Loop */}
-          {formattedData.map((d, index) => {
+          {formattedData.map((d) => {
             const incomeHeight = `${(d.Income / maxVal) * 100}%`;
             const expenseHeight = `${(d.Expense / maxVal) * 100}%`;
 
