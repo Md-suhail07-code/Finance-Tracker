@@ -15,6 +15,7 @@ import CategoryDistribution from "@/components/CategoryDistribution";
 import BudgetPerformance from "@/components/BudgetPerformance";
 import MonthlyTrendChart from "@/components/MonthlyTrendChart";
 import RecentTransactions from "@/components/RecentTransactions";
+import FinancialHealth from "@/components/FinancialHealth";
 
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -31,6 +32,14 @@ const Dashboard: React.FC = () => {
   const [categoryDistribution, setCategoryDistribution] = useState([]);
   const [budgetPerformance, setBudgetPerformance] = useState([]);
   const [spendingTrend, setSpendingTrend] = useState([]);
+  const [financialHealth, setFinancialHealth] = useState({
+    score: 0,
+    status: "Excellent",
+    savingsRate: 0,
+    budgetUsage: 0,
+    income: 0,
+    expense: 0,
+  });
 
   const fetchAnalytics = async () => {
     try {
@@ -38,7 +47,6 @@ const Dashboard: React.FC = () => {
       const res = await api.get("/analytics/overview");
       if (res.status === 200) {
         setAnalytics(res.data.analytics);
-        toast.success("Analytics data fetched successfully!");
       }
     } catch (error) {
       toast.error("Failed to fetch analytics data. Please try again later.");
@@ -53,12 +61,12 @@ const Dashboard: React.FC = () => {
       const res = await api.get("/analytics/monthly-comparison");
       if (res.status === 200) {
         setMonthlyComparison(res.data.monthlyData || []);
-        toast.success("Monthly comparison data fetched successfully!");
       }
     } catch (error) {
-      toast.error("Failed to fetch monthly comparison data. Please try again later.");
-    }
-    finally{
+      toast.error(
+        "Failed to fetch monthly comparison data. Please try again later.",
+      );
+    } finally {
       setLoading(false);
     }
   };
@@ -67,14 +75,14 @@ const Dashboard: React.FC = () => {
     setLoading(true);
     try {
       const res = await api.get("/analytics/category-distribution");
-      if(res.status === 200) {
+      if (res.status === 200) {
         setCategoryDistribution(res.data.categoryDistribution || []);
-        toast.success("Category distribution data fetched successfully!");
       }
     } catch (error) {
-      toast.error("Failed to fetch category distribution data. Please try again later.");
-    }
-    finally{
+      toast.error(
+        "Failed to fetch category distribution data. Please try again later.",
+      );
+    } finally {
       setLoading(false);
     }
   };
@@ -82,34 +90,41 @@ const Dashboard: React.FC = () => {
   const fetchBudgetPerformance = async () => {
     setLoading(true);
     try {
-      const res = await api.get("analytics/budget-performance")
-      if(res.status === 200){
-        setBudgetPerformance(res.data.budgetPerformance)
-        toast.success("Budget Performance fetched successfully")
+      const res = await api.get("analytics/budget-performance");
+      if (res.status === 200) {
+        setBudgetPerformance(res.data.budgetPerformance);
       }
     } catch (error) {
-      toast.error("Failed to fetch Budget Performance")
-    }
-    finally{
+      toast.error("Failed to fetch Budget Performance");
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   const fetchSpendingTrend = async () => {
     try {
       setLoading(true);
       const res = await api.get("/analytics/spending-trend");
-      if(res.status === 200){
+      if (res.status === 200) {
         setSpendingTrend(res.data.monthlyTrend);
-        toast.success("Spending trend fetched successfully");
       }
     } catch (error) {
-      toast.error("Failed to fetch Spending Trend")
-    }
-    finally{
+      toast.error("Failed to fetch Spending Trend");
+    } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const fetchFinancialHealth = async () => {
+    try {
+      const res = await api.get("/analytics/financial-score");
+      if (res.data.success) {
+        setFinancialHealth(res.data.financialHealth)
+      }
+    } catch (error) {
+      toast.error("Failed to fetch Financial Health");
+    }
+  };
 
   useEffect(() => {
     fetchAnalytics();
@@ -117,6 +132,7 @@ const Dashboard: React.FC = () => {
     fetchCategoryDistribution();
     fetchBudgetPerformance();
     fetchSpendingTrend();
+    fetchFinancialHealth();
   }, []);
 
   const summaryData = [
@@ -147,7 +163,8 @@ const Dashboard: React.FC = () => {
 
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
         <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-          Finance Analytics <span className="text-emerald-400 font-mono">Dashboard</span>
+          Finance Analytics{" "}
+          <span className="text-emerald-400 font-mono">Dashboard</span>
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -169,8 +186,9 @@ const Dashboard: React.FC = () => {
           <BudgetPerformance data={budgetPerformance} />
           <MonthlyTrendChart data={spendingTrend} />
         </div>
-        <div>
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
           <RecentTransactions data={analytics.recentTransactions} />
+          <FinancialHealth data={financialHealth} />
         </div>
       </div>
     </div>
