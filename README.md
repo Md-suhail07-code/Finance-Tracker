@@ -1,3 +1,57 @@
+<h1 align="center">
+  <img src="Frontend/src/assets/finTrack_Logo.png" alt="FinTrack Logo" width="40" style="vertical-align: middle;" />
+  AI Powered Personal Finance Analytics Platform
+</h1>
+
+A full-stack web application designed to help users manage their finances through intelligent budgeting, transaction tracking, spending analysis, and financial insights.
+
+The platform enables users to record income and expenses, organize transactions into categories, create monthly and category-based budgets, and monitor financial performance through a centralized analytics dashboard.
+
+Instead of functioning as a simple expense tracker, the application transforms financial data into meaningful insights. Users can visualize spending patterns, compare income and expenses, track budget utilization, identify high-spending categories, and understand their overall financial health.
+
+## Workflow
+
+The application follows a structured financial management process:
+
+### 1. User Authentication
+Users create an account and securely log in to access their personal financial workspace.
+
+### 2. Category Management
+Users create custom categories such as Food, Travel, Shopping, Bills, Entertainment, Salary, Investments, and others to organize financial activities.
+
+### 3. Budget Planning
+Users define:
+- **Monthly Budgets** - Overall spending limits for each month
+- **Category-Based Budgets** - Specific limits per spending category
+
+These budgets act as spending limits and financial goals.
+
+### 4. Transaction Tracking
+Users record:
+- **Income Transactions** - Salary, freelance, investments, etc.
+- **Expense Transactions** - Bills, shopping, food, etc.
+
+Each transaction is linked to a category, amount, date, and description.
+
+### 5. Financial Analysis
+The system processes transaction data and calculates:
+- **Total Income**
+- **Total Expenses** 
+- **Net Savings**
+- **Budget Utilization**
+- **Category Spending Distribution**
+- **Monthly Spending Trends**
+
+### 6. Dashboard Insights
+The dashboard presents financial analytics through charts, summaries, and performance indicators, helping users make informed financial decisions.
+
+### 7. AI-Powered Recommendations
+The platform generates personalized financial insights by analyzing spending behavior, budget adherence, and savings patterns.
+
+## Core Objective
+
+The primary goal of this project is to provide users with a complete financial management ecosystem where budgeting, expense tracking, analytics, and intelligent insights work together to improve financial awareness and decision-making
+
 ## 🏗️ System Architecture
 
 ![Application Architecture](Frontend/src/assets/architecture-diagram.png)
