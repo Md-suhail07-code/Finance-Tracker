@@ -1,7 +1,7 @@
 import axios from "axios";
 import { store } from "@/redux/app/store";
 
-export const API_BASE_URL: string = "http://localhost:5000/api";
+export const API_BASE_URL: string = "https://finance-tracker-backend-wz6r.onrender.com/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
