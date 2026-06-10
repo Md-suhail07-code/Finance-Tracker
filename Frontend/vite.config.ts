@@ -5,16 +5,8 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/",
   plugins: [react(), tailwindcss()],
-  optimizeDeps: {
-    include: ["@nivo/bar", "@nivo/core", "@nivo/axes", "@nivo/scales"],
-    force: true,
-  },
-  server: {
-    fs: {
-      strict: false,
-    },
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
