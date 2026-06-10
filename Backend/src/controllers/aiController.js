@@ -52,7 +52,7 @@ export const getAIInsights = async (req, res) => {
         }));
 
         // 3. CALL GEMINI (Only happens once a day per user now!)
-        const ai = new GoogleGenAI();
+        const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
         const systemPrompt = `
             You are an expert personal financial advisor for "FinTrack".
             Analyze these specific transactions:
@@ -95,7 +95,6 @@ export const getAIInsights = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("AI Insights Error:", error);
         return res.status(500).json({
             success: false,
             message: "Internal Server error",
