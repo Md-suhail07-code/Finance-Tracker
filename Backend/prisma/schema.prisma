@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -20,11 +21,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  transactions Transaction[]
-  budgets      Budget[]
+  transactions    Transaction[]
+  budgets         Budget[]
   categoryBudgets categoryBudget[]
-  aiInsights   AIInsight[]
-  categories   Category[]
+  aiInsights      AIInsight[]
+  categories      Category[]
 }
 
 enum TransactionType {
@@ -62,35 +63,35 @@ model Category {
 }
 
 model Budget {
-  id         String   @id @default(cuid())
-  amount     Decimal  @db.Decimal(10,2)
-  month      String
+  id     String  @id @default(cuid())
+  amount Decimal @db.Decimal(10, 2)
+  month  String
 
-  userId     String
-  user       User @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model categoryBudget {
-  id         String   @id @default(cuid())
-  amount     Decimal  @db.Decimal(10,2)
-  month      String
+  id     String  @id @default(cuid())
+  amount Decimal @db.Decimal(10, 2)
+  month  String
 
-  userId     String
-  user       User @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model AIInsight {
-  id          String   @id @default(cuid())
-  content     String
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
 
-  userId      String
-  user        User @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
