@@ -1,18 +1,35 @@
 import React, { useState } from "react";
 import Logo from "../assets/finTrack_Logo.png";
 import { useNavigate } from "react-router-dom";
+import { api } from "@/config/api";
+import { toast } from "sonner";
+import { Eye, EyeOff, Loader } from "lucide-react";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Provisioning infrastructure identity...", { name, email, password });
+    setLoading(true);
+    try {
+      const res = await api.post("/auth/register", { name, email, password });
+      if (res.data.success) {
+        toast.success("You have registered Successfully")
+        toast.success("Login into your account")
+        navigate("/login")
+      }
+    } catch (error) {
+      toast.error("Failed to create your account");
+    }
+    finally{
+      setLoading(false);
+    }
   };
 
   return (
@@ -120,7 +137,7 @@ const Signup: React.FC = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-emerald-500 hover:text-emerald-400 transition duration-150 z-10 bg-transparent border-0 cursor-pointer"
               >
-                <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"} text-sm`}></i>
+                {showPassword ? <Eye /> : <EyeOff />}
               </button>
             </div>
           </div>
@@ -130,7 +147,9 @@ const Signup: React.FC = () => {
             type="submit"
             className="w-full mt-3 py-4 px-4 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-600 hover:from-cyan-600 hover:to-emerald-700 text-zinc-950 rounded-2xl font-bold text-sm tracking-wide active:scale-[0.99] transition-all duration-150 shadow-[0_8px_32px_0_rgba(0,195,255,0.2)]"
           >
-            Create Account
+            {loading ? (
+              <Loader className="animate-spin text-zinc-950 mx-auto" size={20} />
+            ) : "Create Your Account"}
           </button>
         </form>
 
