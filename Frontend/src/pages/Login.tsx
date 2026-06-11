@@ -14,13 +14,12 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
 
   const user = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
-    if(user){
+    if (user) {
       toast.success("You are already logged in");
       navigate("/dashboard");
       return;
@@ -47,7 +46,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4 sm:px-6 lg:px-8 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
+    <div className="fixed inset-0 sm:relative sm:min-h-screen w-screen sm:w-full flex items-center justify-center bg-black px-0 sm:px-6 lg:px-8 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 overflow-x-hidden">
+      
       {/* Background Interactive Data Grid Layer */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -59,40 +59,40 @@ const Login: React.FC = () => {
       ></div>
 
       {/* Background Ambient Network Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      {/* Main Glassmorphic Container */}
-      <div className="w-full max-w-md bg-zinc-950/40 backdrop-blur-3xl border-l border-t border-white/5 rounded-3xl p-8 shadow-[0_8px_48px_0_rgba(0,255,155,0.1)] relative overflow-hidden group z-10">
+      <div className="w-full h-full sm:h-auto sm:max-w-md bg-zinc-950/40 backdrop-blur-3xl border-0 sm:border-l sm:border-t sm:border-white/5 sm:rounded-3xl p-6 xs:p-8 sm:p-10 flex flex-col justify-center shadow-[0_8px_48px_0_rgba(0,255,155,0.1)] relative overflow-hidden group z-10">
+        
         {/* Luminous Core Logo Accent */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500/50 via-teal-400 to-cyan-500/50 opacity-70"></div>
 
         {/* Header / Logo section */}
-        <div className="flex flex-col items-center mb-8 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center shadow-lg shadow-emerald-500/10 mb-4 transition-transform duration-300 hover:scale-105 overflow-hidden">
+        <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center shadow-lg shadow-emerald-500/10 mb-3 sm:mb-4 transition-transform duration-300 hover:scale-105 overflow-hidden">
             <img
               src={Logo}
               alt="FinTrack Core Logo"
-              className="w-10 h-10 object-contain opacity-90"
+              className="w-8 h-8 sm:w-10 sm:h-10 object-contain opacity-90"
             />
           </div>
-          {/* FIXED: Added text-xl for tiny screens, scaling smoothly to sm:text-2xl */}
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap">
+          
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex flex-row flex-wrap items-center justify-center gap-x-1.5 px-2">
             Welcome to{" "}
             <span className="uppercase tracking-widest text-emerald-400">
               FinTrack
             </span>
           </h2>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className="text-[11px] sm:text-xs text-zinc-400 mt-1">
             Don't lose control of your money
           </p>
         </div>
 
         {/* Authentication Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           {/* Email Field */}
           <div>
-            <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
+            <label className="block text-[10px] sm:text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5 sm:mb-2">
               Email
             </label>
             <div className="relative rounded-xl shadow-sm">
@@ -105,20 +105,20 @@ const Login: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="block w-full pl-10 pr-4 py-3.5 bg-black/40 border border-white/5 rounded-xl text-white placeholder-zinc-700 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition duration-200 text-sm font-medium"
+                className="block w-full pl-10 pr-4 py-3 sm:py-3.5 bg-black/40 border border-white/5 rounded-xl text-white placeholder-zinc-700 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition duration-200 text-sm font-medium"
               />
             </div>
           </div>
 
           {/* Password Field */}
           <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="block text-xs font-medium text-zinc-400 uppercase tracking-wider">
+            <div className="flex justify-between items-center mb-1.5 sm:mb-2">
+              <label className="block text-[10px] sm:text-xs font-medium text-zinc-400 uppercase tracking-wider">
                 Password
               </label>
               <a
                 href="#forgot"
-                className="text-[11px] font-medium text-teal-400 hover:text-emerald-300 transition duration-150"
+                className="text-[10px] sm:text-[11px] font-medium text-teal-400 hover:text-emerald-300 transition duration-150"
               >
                 Forgot password?
               </a>
@@ -133,14 +133,14 @@ const Login: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="block w-full pl-10 pr-12 py-3.5 bg-black/40 border border-white/5 rounded-xl text-white placeholder-zinc-700 focus:outline-none focus:border-teal-500/50 focus:ring-1 focus:ring-teal-500/50 transition duration-200 text-sm font-medium"
+                className="block w-full pl-10 pr-12 py-3 sm:py-3.5 bg-black/40 border border-white/5 rounded-xl text-white placeholder-zinc-700 focus:outline-none focus:border-teal-500/50 focus:ring-1 focus:ring-teal-500/50 transition duration-200 text-sm font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-emerald-500 hover:text-emerald-400 transition duration-150 z-10 bg-transparent border-0 cursor-pointer"
               >
-                {showPassword ? <Eye /> : <EyeOff />}
+                {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
             </div>
           </div>
@@ -148,7 +148,7 @@ const Login: React.FC = () => {
           {/* Submit Action */}
           <button
             type="submit"
-            className="w-full mt-2 py-4 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 text-zinc-950 rounded-2xl font-bold text-sm tracking-wide active:scale-[0.99] transition-all duration-150 shadow-[0_8px_32px_0_rgba(5,255,155,0.2)]"
+            className="w-full mt-2 py-3.5 sm:py-4 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 text-zinc-950 rounded-2xl font-bold text-sm tracking-wide active:scale-[0.99] transition-all duration-150 shadow-[0_8px_32px_0_rgba(5,255,155,0.2)]"
           >
             {loading ? (
               <Loader className="animate-spin text-zinc-950 mx-auto" size={20} />
@@ -157,7 +157,7 @@ const Login: React.FC = () => {
         </form>
 
         {/* Footer Navigation Switch */}
-        <div className="mt-8 pt-6 border-t border-white/5 text-center">
+        <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/5 text-center">
           <p className="text-xs text-zinc-400">
             Not registered yet?{" "}
             <button
