@@ -29,5 +29,18 @@ app.use("/api/analytics", analyticRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/category-budgets", categoryBudgetRoutes);
 
+app.get("/keep-alive", (req, res) => {
+  res.send("Server is running");
+});
+
+setInterval(() => {
+  fetch("https://finance-tracker-backend-wz6r.onrender.com/keep-alive")
+  .then(() => {
+    console.log("Server is running");
+  })
+  .catch((err) => {
+    console.log("Server is not running");
+    });
+  }, 10 * 60 * 1000);
 
 export default app;
