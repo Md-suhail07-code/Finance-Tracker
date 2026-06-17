@@ -6,6 +6,7 @@ import transactionReducer from "../features/transaction/transactionSlice";
 import categoryReducer from "../features/category/categorySlice";
 import budgetReducer from "../features/budget/budgetSlice";
 import categoryBudgetReducer from "../features/categoryBudget/categoryBudgetSlice";
+import profileReducer from "../features/profile/profileSlice";
 
 let storageEngine: any = storage;
 if (!storageEngine || typeof storageEngine.getItem !== "function") {
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   categories: categoryReducer,
   budgets: budgetReducer,
   categoryBudgets: categoryBudgetReducer,
+  profile: profileReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
