@@ -1,59 +1,53 @@
 import prisma from "../config/prisma.js";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import { financialCalculation } from "../services/financialCalculation.js";
+import { financialRuleEngine } from "../services/financialRuleEngine.js";
 
 dotenv.config();
 
 export const getAIInsights = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const existingInsight = await prisma.aIInsight.findFirst({
+      where: {
+        userId,
+
+        createdAt: {
+          gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+        },
+      },
+
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (existingInsight) {
+      return res.json({
+        success: true,
+
+        source: "cache",
+
+        data: JSON.parse(existingInsight.content),
+      });
+    }
+
+    const financialData = await financialCalculation(userId);
+
+    const ruleInsights = financialRuleEngine(financialData);
+
+    let finalInsights = ruleInsights;
+
+    let source = "rule";
+
     try {
-        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        
-        const existingInsight = await prisma.aIInsight.findFirst({
-            where: {
-                userId: req.user.id,
-                createdAt: { gte: twentyFourHoursAgo }
-            },
-            orderBy: { createdAt: "desc" }
-        });
+      const ai = new GoogleGenAI({
+        apiKey: process.env.GEMINI_API_KEY,
+      });
 
-        if (existingInsight) {
-            return res.status(200).json({
-                success: true,
-                message: "AI insights fetched from cache",
-                source: "cache",
-                insightId: existingInsight.id,
-                createdAt: existingInsight.createdAt,
-                data: JSON.parse(existingInsight.content) 
-            });
-        }
-
-        const transactions = await prisma.transaction.findMany({
-            where: { userId: req.user.id },
-            include: { 
-                category: { select: { name: true } } 
-            },
-            orderBy: { date: "desc" },
-            take: 20
-        });
-
-        if (transactions.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No transactions found for AI insights"
-            });
-        }
-
-        const formattedTransactions = transactions.map(t => ({
-            type: t.type,
-            amount: t.amount,
-            category: t.category?.name || "Uncategorized",
-            description: t.description || "",
-            date: t.date.toISOString().split('T')[0]
-        }));
-
-        // 3. CALL GEMINI (Only happens once a day per user now!)
-        const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-        const systemPrompt = `
+      const prompt = `
             You are an expert personal financial advisor for "FinTrack".
             Analyze these specific transactions:
             ${JSON.stringify(formattedTransactions, null, 2)}
@@ -69,36 +63,51 @@ export const getAIInsights = async (req, res) => {
             - Ensure the JSON is well-formed and can be parsed without errors.
         `;
 
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
-            contents: systemPrompt,
-            config: { responseMimeType: "application/json" }
-        });
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
 
-        const rawJsonString = response.text;
-        const parsedInsights = JSON.parse(rawJsonString);
+        contents: prompt,
 
-        const savedInsight = await prisma.aIInsight.create({
-            data: {
-                content: rawJsonString,
-                userId: req.user.id
-            }
-        });
+        config: {
+          responseMimeType: "application/json",
+        },
+      });
 
-        return res.status(200).json({
-            success: true,
-            message: "AI insights generated successfully",
-            source: "api",
-            insightId: savedInsight.id,
-            createdAt: savedInsight.createdAt,
-            data: parsedInsights
-        });
+      const aiResult = JSON.parse(response.text);
 
+      if (aiResult) {
+        finalInsights = aiResult;
+
+        source = "gemini";
+      }
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server error",
-            error: error.message
-        });
+      console.log("Gemini failed, using rule engine", error.message);
     }
+
+    const saved = await prisma.aIInsight.create({
+      data: {
+        content: JSON.stringify(finalInsights),
+
+        userId,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+
+      source,
+
+      insightId: saved.id,
+
+      data: finalInsights,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+
+      message: "AI Insight generation failed",
+
+      error: error.message,
+    });
+  }
 };
