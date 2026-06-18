@@ -8,8 +8,14 @@ const initialState: ProfileState = {
     totalExpense: 0,
     totalSaved: 0,
     avgExpense: 0,
-    maxCategory: "",
-    maxSpendMonth: ""
+    maxCategory: {
+        name: "",
+        amount: 0
+    },
+    maxSpendMonth: {
+        month: "",
+        amount: 0
+    }
 }
 
 const profileSlice = createSlice({

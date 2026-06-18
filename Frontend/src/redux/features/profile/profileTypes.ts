@@ -9,6 +9,12 @@ export interface ProfileState{
     totalExpense : number,
     totalSaved : number,
     avgExpense : number,
-    maxCategory : string,
-    maxSpendMonth : string
+    maxCategory : {
+        name: string,
+        amount: number
+    },
+    maxSpendMonth : {
+        month: string,
+        amount: number
+    }
 }
