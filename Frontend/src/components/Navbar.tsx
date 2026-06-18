@@ -8,6 +8,7 @@ import {
   Wallet,
   FolderTree,
   Loader,
+  User,
 } from "lucide-react";
 import { logout } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks/reduxHooks.ts";
@@ -48,7 +49,6 @@ const Navbar: React.FC = () => {
     <nav className="w-full bg-black/80 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 selection:bg-emerald-500/30 selection:text-emerald-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Left Side: Brand Logo and Text Alignment */}
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate("/dashboard")}>
             <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center shadow-md shadow-emerald-500/5 transition-transform duration-300 group-hover:scale-105 overflow-hidden">
               <img
@@ -62,7 +62,6 @@ const Navbar: React.FC = () => {
             </span>
           </div>
 
-          {/* Desktop Navigation Link Cluster */}
           <div className="hidden md:flex items-center gap-1.5">
             {navigationLinks.map((link) => {
               const isActive = activePath === link.path;
@@ -85,21 +84,30 @@ const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* Right Side Actions: Auth Call to Actions */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
+            <Link
+              to="/profile"
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide border transition-all duration-200 ${
+                activePath === "/profile"
+                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_15px_rgba(5,255,155,0.05)]"
+                  : "border-white/5 text-zinc-400 bg-zinc-950/40 hover:bg-zinc-900 hover:text-zinc-200"
+              }`}
+            >
+              <User className="w-3.5 h-3.5" />
+              Profile
+            </Link>
             <button
               onClick={() => handleLogout()}
-              className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-zinc-950 text-xs font-bold rounded-xl tracking-wide shadow-md shadow-emerald-500/10 active:scale-[0.98] transition-all duration-150"
+              className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-zinc-950 text-xs font-bold rounded-xl tracking-wide shadow-md shadow-emerald-500/10 active:scale-[0.98] transition-all duration-150 h-[34px] flex items-center justify-center min-w-[76px]"
             >
               {loading ? (
-                <Loader className="w-4 h-4 text-white animate-spin" size={20} />
+                <Loader className="w-4 h-4 text-zinc-950 animate-spin" size={20} />
               ) : (
                 "Logout"
               )}
             </button>
           </div>
 
-          {/* Mobile Breakpoint Menu Trigger Button */}
           <div className="flex md:hidden">
             <button
               type="button"
@@ -117,7 +125,6 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Layer Overlay Stack */}
       <div
         className={`md:hidden absolute top-16 left-0 w-full bg-zinc-950/95 backdrop-blur-2xl border-b border-white/5 transition-all duration-300 ease-in-out origin-top z-40 ${
           isMobileMenuOpen
@@ -126,7 +133,6 @@ const Navbar: React.FC = () => {
         }`}
       >
         <div className="px-4 pt-3 pb-6 space-y-2">
-          {/* Mobile Specific App Navigation Nodes */}
           {navigationLinks.map((link) => {
             const isActive = activePath === link.path;
             const IconComponent = link.icon; 
@@ -134,8 +140,8 @@ const Navbar: React.FC = () => {
             return (
               <Link
                 key={link.path}
-                to={link.path} // 5. Changed href to to
-                onClick={() => setIsMobileMenuOpen(false)} // 6. Fixed: Close menu instead of logging out!
+                to={link.path}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition duration-150 ${
                   isActive
                     ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"
@@ -148,16 +154,31 @@ const Navbar: React.FC = () => {
             );
           })}
 
+          <Link
+            to="/profile"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition duration-150 ${
+              activePath === "/profile"
+                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/15"
+                : "text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.02]"
+            }`}
+          >
+            <User className="w-4 h-4 shrink-0" />
+            Profile
+          </Link>
+
           <div className="h-[1px] bg-white/5 my-3"></div>
 
-          {/* Mobile Profile Actions */}
-          <div className="grid grid-cols-2 gap-3 pt-2">
+          <div className="pt-1">
             <button
-              onClick={() => handleLogout()}
-              className="w-full py-3 text-center rounded-xl text-xs font-bold text-zinc-950 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 transition shadow-sm"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                handleLogout();
+              }}
+              className="w-full py-3.5 text-center rounded-xl text-xs font-bold text-zinc-950 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 transition shadow-md shadow-emerald-500/5 flex items-center justify-center"
             >
               {loading ? (
-                <Loader className="w-4 h-4 text-white animate-spin" size={20} />
+                <Loader className="w-4 h-4 text-zinc-950 animate-spin" size={20} />
               ) : (
                 "Logout"
               )}
