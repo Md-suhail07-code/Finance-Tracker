@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Categories from "./pages/Categories";
 import Budgets from "./pages/Budgets";
 import Transactions from "./pages/Transactions";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -48,6 +49,15 @@ const App = () => {
             <>
               <Navbar />
               <Transactions />
+            </>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <>
+              <Navbar />
+              <Profile />
             </>
           }
         />
