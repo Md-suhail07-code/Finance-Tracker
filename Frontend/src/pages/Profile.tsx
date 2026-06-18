@@ -142,17 +142,19 @@ const Profile: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-4 bg-black/30 border border-white/5 rounded-xl flex items-center gap-4">
-                  <div className="w-9 h-9 rounded-xl bg-stone-700 border border-stone-900 flex items-center justify-center text-stone-900 shrink-0">
-                    <Layers size={18} />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Total Transactions</span>
-                    <span className="text-base font-bold font-mono text-white block mt-0.5">
-                      {profile?.totalTransactions}
-                    </span>
-                  </div>
-                </div>
+                <div className="p-4 bg-black/30 border border-white/5 rounded-xl flex items-center gap-4 group hover:border-white/10 transition-all duration-300">
+  <div className="w-9 h-9 rounded-xl bg-amber-700/10 border border-amber-700/20 flex items-center justify-center text-amber-500 shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-md shadow-amber-700/5">
+    <Layers size={18} />
+  </div>
+  <div className="min-w-0 flex-1">
+    <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">
+      Total Transactions
+    </span>
+    <span className="text-base font-bold font-mono text-white block mt-0.5">
+      {profile?.totalTransactions || 0}
+    </span>
+  </div>
+</div>
               </div>
             </div>
 
