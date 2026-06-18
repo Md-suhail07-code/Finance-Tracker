@@ -9,11 +9,11 @@ import {
   Mail, 
   ArrowUpRight, 
   ArrowDownLeft, 
-  PiggyBank, 
   Calculator,
   Layers,
   TrendingUp,
-  Calendar
+  Calendar,
+  Wallet
 } from "lucide-react";
 
 const Profile: React.FC = () => {
@@ -120,7 +120,7 @@ const Profile: React.FC = () => {
 
                 <div className="p-4 bg-black/30 border border-white/5 rounded-xl flex items-center gap-4">
                   <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
-                    <PiggyBank size={18} />
+                    <Wallet size={18} />
                   </div>
                   <div>
                     <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 block">Total Saved</span>
