@@ -126,16 +126,16 @@ export const getProfile = async (req, res) => {
     const monthArray = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
     transactions.forEach((tran) => {
-      if (tran.type === "INCOME") totalIncome += tran.amount;
+      if (tran.type === "INCOME") totalIncome += parseInt(tran.amount);
       if (tran.type === "EXPENSE") {
-        totalExpense += tran.amount;
+        totalExpense += parseInt(tran.amount);
 
         const catName = tran.category.name;
-        categoryMap[catName] = (categoryMap[catName] || 0) + tran.amount;
+        categoryMap[catName] = (categoryMap[catName] || 0) + parseInt(tran.amount);
 
-        const month = tran.date.getMonth(); // added ()
+        const month = tran.date.getMonth();
         const monthName = monthArray[month];
-        monthlyMap[monthName] = (monthlyMap[monthName] || 0) + tran.amount;
+        monthlyMap[monthName] = (monthlyMap[monthName] || 0) + parseInt(tran.amount);
       }
     });
 
@@ -150,7 +150,7 @@ export const getProfile = async (req, res) => {
     );
 
     const totalSaved = totalIncome - totalExpense;
-    const currentMonth = new Date().getMonth() + 1; // +1 to avoid 0 in Jan
+    const currentMonth = new Date().getMonth() + 1;
     const avgExpense = currentMonth? totalExpense / currentMonth : 0;
 
     return res.status(200).json({
