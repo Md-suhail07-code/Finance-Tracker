@@ -1,7 +1,7 @@
 import prisma from "../config/prisma.js";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
-import { financialCalculation } from "../services/financialCalculation.js";
+import { financialCalculation } from "../utils/financialCalculation.js";
 import { financialRuleEngine } from "../services/financialRuleEngine.js";
 
 dotenv.config();
@@ -13,12 +13,10 @@ export const getAIInsights = async (req, res) => {
     const existingInsight = await prisma.aIInsight.findFirst({
       where: {
         userId,
-
         createdAt: {
           gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
         },
       },
-
       orderBy: {
         createdAt: "desc",
       },
@@ -27,12 +25,34 @@ export const getAIInsights = async (req, res) => {
     if (existingInsight) {
       return res.json({
         success: true,
-
         source: "cache",
-
         data: JSON.parse(existingInsight.content),
       });
     }
+
+    const transactions = await prisma.transaction.findMany({
+      where: { userId: req.user.id },
+      include: {
+        category: { select: { name: true } },
+      },
+      orderBy: { date: "desc" },
+      take: 20,
+    });
+
+    if (transactions.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No transactions found for AI insights",
+      });
+    }
+
+    const formattedTransactions = transactions.map((t) => ({
+      type: t.type,
+      amount: t.amount,
+      category: t.category?.name || "Uncategorized",
+      description: t.description || "",
+      date: t.date.toISOString().split("T")[0],
+    }));
 
     const financialData = await financialCalculation(userId);
 
@@ -65,9 +85,7 @@ export const getAIInsights = async (req, res) => {
 
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
-
         contents: prompt,
-
         config: {
           responseMimeType: "application/json",
         },
@@ -87,26 +105,21 @@ export const getAIInsights = async (req, res) => {
     const saved = await prisma.aIInsight.create({
       data: {
         content: JSON.stringify(finalInsights),
-
         userId,
+        source,
       },
     });
 
     return res.status(200).json({
       success: true,
-
       source,
-
       insightId: saved.id,
-
       data: finalInsights,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-
       message: "AI Insight generation failed",
-
       error: error.message,
     });
   }
