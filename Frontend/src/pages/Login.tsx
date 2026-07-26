@@ -20,7 +20,6 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      toast.success("You are already logged in");
       navigate("/dashboard");
       return;
     }
