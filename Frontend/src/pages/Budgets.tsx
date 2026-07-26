@@ -264,11 +264,10 @@ const Budgets = () => {
               type="month"
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="bg-transparent border-0 text-xs font-semibold text-white focus:outline-none focus:ring-0 cursor-pointer px-2 w-full sm:w-auto"
+              className="bg-transparent border-0 text-xs font-semibold text-white focus:outline-none focus:ring-0 cursor-pointer px-2 w-full sm:w-auto [&::-webkit-calendar-picker-indicator]:invert"
             />
           </div>
         </div>
-
         {error && (
           <div className="p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs rounded-xl flex items-center gap-2 animate-fadeIn">
             <AlertTriangle className="w-4 h-4 shrink-0" />
