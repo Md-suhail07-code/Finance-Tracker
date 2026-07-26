@@ -1,5 +1,7 @@
 import axios from "axios";
 import { store } from "@/redux/app/store";
+import { logout } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 export const API_BASE_URL: string = "http://localhost:5000/api";
 
@@ -22,8 +24,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+      toast.error("Session expired. Please login again");
+      store.dispatch(logout());
     }
     return Promise.reject(error);
   }
