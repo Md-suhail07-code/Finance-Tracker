@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../assets/finTrack_Logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -46,11 +46,11 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 sm:relative sm:min-h-screen w-screen sm:w-full flex items-center justify-center bg-black px-0 sm:px-6 lg:px-8 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 overflow-x-hidden">
+    <div className="fixed inset-0 sm:relative sm:min-h-screen w-screen sm:w-full flex items-center justify-center bg-slate-50 dark:bg-black px-0 sm:px-6 lg:px-8 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 overflow-x-hidden transition-colors duration-200">
       
       {/* Background Interactive Data Grid Layer */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.03] pointer-events-none"
         style={{
           backgroundImage:
             "linear-gradient(#05FF9B 1px, transparent 1px), linear-gradient(90deg, #05FF9B 1px, transparent 1px)",
@@ -59,17 +59,17 @@ const Login: React.FC = () => {
       ></div>
 
       {/* Background Ambient Network Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-cyan-500/10 dark:bg-cyan-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="w-full h-full sm:h-auto sm:max-w-md bg-zinc-950/40 backdrop-blur-3xl border-0 sm:border-l sm:border-t sm:border-white/5 sm:rounded-3xl p-6 xs:p-8 sm:p-10 flex flex-col justify-center shadow-[0_8px_48px_0_rgba(0,255,155,0.1)] relative overflow-hidden group z-10">
+      <div className="w-full h-full sm:h-auto sm:max-w-md bg-white/80 dark:bg-zinc-950/40 backdrop-blur-3xl border-0 sm:border sm:border-slate-200 dark:sm:border-white/5 sm:rounded-3xl p-6 xs:p-8 sm:p-10 flex flex-col justify-center shadow-lg dark:shadow-[0_8px_48px_0_rgba(0,255,155,0.1)] relative overflow-hidden group z-10">
         
         {/* Luminous Core Logo Accent */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500/50 via-teal-400 to-cyan-500/50 opacity-70"></div>
 
         {/* Header / Logo section */}
         <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center shadow-lg shadow-emerald-500/10 mb-3 sm:mb-4 transition-transform duration-300 hover:scale-105 overflow-hidden">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-100 dark:bg-zinc-900 border border-slate-200 dark:border-white/5 flex items-center justify-center shadow-lg shadow-emerald-500/10 mb-3 sm:mb-4 transition-transform duration-300 hover:scale-105 overflow-hidden">
             <img
               src={Logo}
               alt="FinTrack Core Logo"
@@ -77,13 +77,13 @@ const Login: React.FC = () => {
             />
           </div>
           
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex flex-row flex-wrap items-center justify-center gap-x-1.5 px-2">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex flex-row flex-wrap items-center justify-center gap-x-1.5 px-2">
             Welcome to{" "}
-            <span className="uppercase tracking-widest text-emerald-400">
+            <span className="uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
               FinTrack
             </span>
           </h2>
-          <p className="text-[11px] sm:text-xs text-zinc-400 mt-1">
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400 mt-1">
             Don't lose control of your money
           </p>
         </div>
@@ -92,11 +92,11 @@ const Login: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           {/* Email Field */}
           <div>
-            <label className="block text-[10px] sm:text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1.5 sm:mb-2">
+            <label className="block text-[10px] sm:text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5 sm:mb-2">
               Email
             </label>
             <div className="relative rounded-xl shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-500">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600 dark:text-emerald-500">
                 <i className="fa-solid fa-user-gear text-xs"></i>
               </div>
               <input
@@ -105,7 +105,7 @@ const Login: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="block w-full pl-10 pr-4 py-3 sm:py-3.5 bg-black/40 border border-white/5 rounded-xl text-white placeholder-zinc-700 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition duration-200 text-sm font-medium"
+                className="block w-full pl-10 pr-4 py-3 sm:py-3.5 bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/5 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-zinc-700 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition duration-200 text-sm font-medium"
               />
             </div>
           </div>
@@ -113,18 +113,18 @@ const Login: React.FC = () => {
           {/* Password Field */}
           <div>
             <div className="flex justify-between items-center mb-1.5 sm:mb-2">
-              <label className="block text-[10px] sm:text-xs font-medium text-zinc-400 uppercase tracking-wider">
+              <label className="block text-[10px] sm:text-xs font-medium text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
                 Password
               </label>
               <a
                 href="#forgot"
-                className="text-[10px] sm:text-[11px] font-medium text-teal-400 hover:text-emerald-300 transition duration-150"
+                className="text-[10px] sm:text-[11px] font-medium text-teal-600 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-300 transition duration-150"
               >
                 Forgot password?
               </a>
             </div>
             <div className="relative rounded-xl shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-500 z-10">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600 dark:text-emerald-500 z-10">
                 <i className="fa-solid fa-lock text-xs"></i>
               </div>
               <input
@@ -133,12 +133,12 @@ const Login: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="block w-full pl-10 pr-12 py-3 sm:py-3.5 bg-black/40 border border-white/5 rounded-xl text-white placeholder-zinc-700 focus:outline-none focus:border-teal-500/50 focus:ring-1 focus:ring-teal-500/50 transition duration-200 text-sm font-medium"
+                className="block w-full pl-10 pr-12 py-3 sm:py-3.5 bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/5 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-zinc-700 focus:outline-none focus:border-teal-500/50 focus:ring-1 focus:ring-teal-500/50 transition duration-200 text-sm font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-emerald-500 hover:text-emerald-400 transition duration-150 z-10 bg-transparent border-0 cursor-pointer"
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-emerald-600 dark:text-emerald-500 hover:text-emerald-500 dark:hover:text-emerald-400 transition duration-150 z-10 bg-transparent border-0 cursor-pointer"
               >
                 {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
@@ -148,7 +148,7 @@ const Login: React.FC = () => {
           {/* Submit Action */}
           <button
             type="submit"
-            className="w-full mt-2 py-3.5 sm:py-4 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 text-zinc-950 rounded-2xl font-bold text-sm tracking-wide active:scale-[0.99] transition-all duration-150 shadow-[0_8px_32px_0_rgba(5,255,155,0.2)]"
+            className="w-full mt-2 py-3.5 sm:py-4 px-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 text-zinc-950 rounded-2xl font-bold text-sm tracking-wide active:scale-[0.99] transition-all duration-150 shadow-[0_8px_32px_0_rgba(5,255,155,0.2)] cursor-pointer"
           >
             {loading ? (
               <Loader className="animate-spin text-zinc-950 mx-auto" size={20} />
@@ -157,12 +157,12 @@ const Login: React.FC = () => {
         </form>
 
         {/* Footer Navigation Switch */}
-        <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/5 text-center">
-          <p className="text-xs text-zinc-400">
+        <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-slate-200 dark:border-white/5 text-center">
+          <p className="text-xs text-slate-500 dark:text-zinc-400">
             Not registered yet?{" "}
             <button
               onClick={() => navigate("/signup")}
-              className="text-teal-400 hover:text-emerald-300 font-medium transition duration-150"
+              className="text-teal-600 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-300 font-medium transition duration-150 cursor-pointer"
             >
               Create an account
             </button>

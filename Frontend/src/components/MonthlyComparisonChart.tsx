@@ -45,12 +45,12 @@ const MonthlyComparisonChart: React.FC<MonthlyComparisonChartProps> = ({ data })
     }).format(value);
 
   return (
-    <div className="bg-zinc-950/40 backdrop-blur-3xl border border-white/5 rounded-2xl p-4 sm:p-6 shadow-[0_4px_24px_rgba(0,0,0,0.3)] relative">
+    <div className="bg-white/80 dark:bg-zinc-950/40 backdrop-blur-3xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 sm:p-6 shadow-sm dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] relative">
       <div className="mb-6">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-white">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
           Monthly Overview
         </h2>
-        <p className="text-[10px] text-zinc-500 mt-0.5">
+        <p className="text-[10px] text-slate-500 dark:text-zinc-500 mt-0.5">
           Comparison matrix of income versus expense flow
         </p>
       </div>
@@ -59,30 +59,30 @@ const MonthlyComparisonChart: React.FC<MonthlyComparisonChartProps> = ({ data })
         {/* Absolute Floating Tooltip Card Container */}
         {activeTooltip && (
           <div
-            className="absolute z-30 bg-zinc-950 border border-white/10 p-3 rounded-xl shadow-2xl pointer-events-none transition-all duration-100 ease-out animate-fadeIn"
+            className="absolute z-30 bg-white dark:bg-zinc-950 border border-slate-200 dark:border-white/10 p-3 rounded-xl shadow-2xl pointer-events-none transition-all duration-100 ease-out animate-fadeIn"
             style={{
               left: `${activeTooltip.x}px`,
               top: `${activeTooltip.y - 85}px`,
               transform: "translateX(-50%)",
             }}
           >
-            <div className="text-white font-semibold text-xs mb-1.5 border-b border-white/5 pb-1">
+            <div className="text-slate-900 dark:text-white font-semibold text-xs mb-1.5 border-b border-slate-100 dark:border-white/5 pb-1">
               {activeTooltip.month} Overview
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-4 text-xs justify-between">
-                <span className="text-zinc-400 flex items-center gap-1.5">
+                <span className="text-slate-500 dark:text-zinc-400 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Income:
                 </span>
-                <span className="font-mono font-bold text-white">
+                <span className="font-mono font-bold text-slate-900 dark:text-white">
                   {formatCurrency(activeTooltip.income)}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-xs justify-between">
-                <span className="text-zinc-400 flex items-center gap-1.5">
+                <span className="text-slate-500 dark:text-zinc-400 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-500" /> Expense:
                 </span>
-                <span className="font-mono font-bold text-white">
+                <span className="font-mono font-bold text-slate-900 dark:text-white">
                   {formatCurrency(activeTooltip.expense)}
                 </span>
               </div>
@@ -91,14 +91,14 @@ const MonthlyComparisonChart: React.FC<MonthlyComparisonChartProps> = ({ data })
         )}
 
         {/* Chart Main Layout Wrapper Grid Column Stack */}
-        <div className="flex h-64 sm:h-80 w-full items-end gap-2 sm:gap-4 pb-6 border-b border-white/5 relative z-10">
+        <div className="flex h-64 sm:h-80 w-full items-end gap-2 sm:gap-4 pb-6 border-b border-slate-200 dark:border-white/5 relative z-10">
           
           {/* Horizontal Background Grid Reference Lines */}
           <div className="absolute inset-0 flex flex-col justify-between pointer-events-none select-none z-0">
-            <div className="w-full border-t border-white/[0.03]" />
-            <div className="w-full border-t border-white/[0.03]" />
-            <div className="w-full border-t border-white/[0.03]" />
-            <div className="w-full border-t border-white/[0.03]" />
+            <div className="w-full border-t border-slate-100 dark:border-white/[0.03]" />
+            <div className="w-full border-t border-slate-100 dark:border-white/[0.03]" />
+            <div className="w-full border-t border-slate-100 dark:border-white/[0.03]" />
+            <div className="w-full border-t border-slate-100 dark:border-white/[0.03]" />
           </div>
 
           {/* Dynamic Graph Pillars Data Mapping Element Loop */}
@@ -138,7 +138,7 @@ const MonthlyComparisonChart: React.FC<MonthlyComparisonChartProps> = ({ data })
                 />
 
                 {/* Bottom X-Axis Absolute Label Placements */}
-                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-medium text-zinc-500 group-hover/pillar:text-zinc-200 transition duration-150">
+                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-medium text-slate-500 dark:text-zinc-500 group-hover/pillar:text-slate-900 dark:group-hover/pillar:text-zinc-200 transition duration-150">
                   {d.month}
                 </span>
               </div>
@@ -148,11 +148,11 @@ const MonthlyComparisonChart: React.FC<MonthlyComparisonChartProps> = ({ data })
 
         {/* Global Component Bottom Horizontal Legend Markers */}
         <div className="flex items-center justify-center gap-6 mt-8 pt-2">
-          <div className="flex items-center gap-2 text-[11px] font-semibold text-zinc-400">
+          <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-600 dark:text-zinc-400">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)]" />
             <span>Income Stream</span>
           </div>
-          <div className="flex items-center gap-2 text-[11px] font-semibold text-zinc-400">
+          <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-600 dark:text-zinc-400">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]" />
             <span>Expense Stream</span>
           </div>

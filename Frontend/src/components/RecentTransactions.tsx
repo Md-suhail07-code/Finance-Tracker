@@ -43,28 +43,28 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-zinc-950/40 backdrop-blur-3xl border border-white/5 rounded-2xl p-4 sm:p-6 shadow-[0_4px_24px_rgba(0,0,0,0.3)] flex flex-col h-full">
+    <div className="bg-white/80 dark:bg-zinc-950/40 backdrop-blur-3xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 sm:p-6 shadow-sm dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] flex flex-col h-full">
       <div className="flex justify-between items-center mb-5">
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-white">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
             Recent Transactions
           </h2>
-          <p className="text-[10px] text-zinc-500 mt-0.5">
+          <p className="text-[10px] text-slate-500 dark:text-zinc-500 mt-0.5">
             Your latest transactional records
           </p>
         </div>
         <Link
           to="/transactions"
-          className="text-[10px] font-bold uppercase tracking-wide text-zinc-400 hover:text-emerald-400 flex items-center gap-1 transition"
+          className="text-[10px] font-bold uppercase tracking-wide text-slate-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 flex items-center gap-1 transition"
         >
           View All <ArrowRight size={12} />
         </Link>
       </div>
 
-      <div className="space-y-3 divide-y divide-white/5 flex-1">
+      <div className="space-y-3 divide-y divide-slate-100 dark:divide-white/5 flex-1">
         {validData.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center p-8 h-40">
-            <p className="text-xs font-medium text-zinc-500">
+            <p className="text-xs font-medium text-slate-500 dark:text-zinc-500">
               No recent transactions found.
             </p>
           </div>
@@ -82,18 +82,18 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ data }) => {
                   <div
                     className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border transition-colors ${
                       isIncome
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                        : "bg-zinc-900 border-white/5 text-rose-400"
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                        : "bg-rose-500/10 dark:bg-zinc-900 border-rose-500/20 dark:border-white/5 text-rose-500 dark:text-rose-400"
                     }`}
                   >
                     {isIncome ? <ArrowUpRight size={16} /> : <ArrowDownLeft size={16} />}
                   </div>
                   <div className="min-w-0">
-                    <h4 className="text-sm font-semibold text-zinc-200 truncate group-hover:text-white transition">
+                    <h4 className="text-sm font-semibold text-slate-900 dark:text-zinc-200 truncate group-hover:text-emerald-600 dark:group-hover:text-white transition">
                       {tx.title}
                     </h4>
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-zinc-500 mt-0.5">
-                      <span className="text-zinc-400 font-medium">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-zinc-500 mt-0.5">
+                      <span className="text-slate-600 dark:text-zinc-400 font-medium">
                         {tx.category?.name || "Unassigned"}
                       </span>
                       <span>•</span>
@@ -107,7 +107,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ data }) => {
 
                 <span
                   className={`text-sm font-mono font-bold shrink-0 ml-3 ${
-                    isIncome ? "text-emerald-400" : "text-zinc-300"
+                    isIncome ? "text-emerald-600 dark:text-emerald-400" : "text-slate-700 dark:text-zinc-300"
                   }`}
                 >
                   {isIncome ? "+" : "-"}

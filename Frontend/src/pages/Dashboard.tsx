@@ -153,13 +153,13 @@ const Dashboard: React.FC = () => {
   ];
 
   return loading ? (
-    <div className="flex items-center justify-center h-screen bg-black">
+    <div className="flex items-center justify-center h-screen bg-slate-50 dark:bg-black">
       <Loader2 className="animate-spin text-emerald-500" size={48} />
     </div>
   ) : (
-    <div className="p-4 sm:p-6 lg:px-12 space-y-6 bg-black min-h-screen font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 relative overflow-hidden">
+    <div className="p-4 sm:p-6 lg:px-12 space-y-6 bg-slate-50 dark:bg-black text-slate-900 dark:text-gray-100 min-h-screen font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 relative overflow-hidden transition-colors duration-200">
       <div
-        className="absolute inset-0 opacity-[0.02] pointer-events-none z-0"
+        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02] pointer-events-none z-0"
         style={{
           backgroundImage:
             "linear-gradient(#05FF9B 1px, transparent 1px), linear-gradient(90deg, #05FF9B 1px, transparent 1px)",
@@ -168,11 +168,11 @@ const Dashboard: React.FC = () => {
       ></div>
 
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-white/5">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
               Finance Analytics{" "}
-              <span className="text-emerald-400 font-mono">Dashboard</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-mono">Dashboard</span>
             </h1>
           </div>
           <button
