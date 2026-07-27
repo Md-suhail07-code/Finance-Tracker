@@ -34,35 +34,35 @@ const CategoryDistribution: React.FC<CategoryDistributionProps> = ({ data }) => 
   let accumulatedPercentage = 0;
 
   return (
-    <div className="bg-zinc-950/40 backdrop-blur-3xl border border-white/5 rounded-2xl p-4 sm:p-6 shadow-[0_4px_24px_rgba(0,0,0,0.3)] relative group">
+    <div className="bg-white/80 dark:bg-zinc-950/40 backdrop-blur-3xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 sm:p-6 shadow-sm dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] relative group">
       <div className="mb-6">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-white">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
           Category Distribution
         </h2>
-        <p className="text-[10px] text-zinc-500 mt-0.5">
+        <p className="text-[10px] text-slate-500 dark:text-zinc-500 mt-0.5">
           Breakdown of outbound allocations across asset frameworks
         </p>
       </div>
 
       {activeIndex !== null && validData[activeIndex] && (
         <div
-          className="absolute z-30 bg-zinc-950 border border-white/10 p-2.5 rounded-xl shadow-2xl pointer-events-none transition-all duration-700 ease-out"
+          className="absolute z-30 bg-white dark:bg-zinc-950 border border-slate-200 dark:border-white/10 p-2.5 rounded-xl shadow-2xl pointer-events-none transition-all duration-700 ease-out"
           style={{
             left: `${tooltipPos.x}px`,
             top: `${tooltipPos.y - 65}px`,
             transform: "translateX(-50%)",
           }}
         >
-          <div className="flex items-center gap-2 text-xs text-white font-medium">
+          <div className="flex items-center gap-2 text-xs text-slate-900 dark:text-white font-medium">
             <span 
               className="w-1.5 h-1.5 rounded-full" 
               style={{ backgroundColor: colors[activeIndex % colors.length] }}
             />
-            <span className="text-zinc-400">{validData[activeIndex].category}:</span>
-            <span className="font-mono font-bold text-white">
+            <span className="text-slate-500 dark:text-zinc-400">{validData[activeIndex].category}:</span>
+            <span className="font-mono font-bold text-slate-900 dark:text-white">
               {formatCurrency(validData[activeIndex].amount)}
             </span>
-            <span className="text-[10px] text-emerald-400 font-mono">
+            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">
               ({((validData[activeIndex].amount / totalAmount) * 100).toFixed(1)}%)
             </span>
           </div>
@@ -79,7 +79,8 @@ const CategoryDistribution: React.FC<CategoryDistributionProps> = ({ data }) => 
                 cy={center}
                 r={radius}
                 fill="transparent"
-                stroke="rgba(255, 255, 255, 0.03)"
+                stroke="currentColor"
+                className="text-slate-200 dark:text-white/5"
                 strokeWidth={strokeWidth}
               />
             </svg>
@@ -126,8 +127,8 @@ const CategoryDistribution: React.FC<CategoryDistributionProps> = ({ data }) => 
           )}
 
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Total Volume</span>
-            <span className="text-lg font-bold font-mono tracking-tight text-white mt-0.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-500">Total Volume</span>
+            <span className="text-lg font-bold font-mono tracking-tight text-slate-900 dark:text-white mt-0.5">
               {formatCurrency(totalAmount)}
             </span>
           </div>
@@ -142,10 +143,10 @@ const CategoryDistribution: React.FC<CategoryDistributionProps> = ({ data }) => 
             return (
               <div
                 key={item.category}
-                className="flex items-center justify-between p-2 rounded-xl border border-transparent transition-all duration-200"
+                className="flex items-center justify-between p-2 rounded-xl border transition-all duration-200"
                 style={{
-                  backgroundColor: isSelected ? "rgba(255, 255, 255, 0.02)" : "transparent",
-                  borderColor: isSelected ? "rgba(255, 255, 255, 0.05)" : "transparent",
+                  backgroundColor: isSelected ? "rgba(16, 185, 129, 0.08)" : "transparent",
+                  borderColor: isSelected ? "rgba(16, 185, 129, 0.2)" : "transparent",
                 }}
                 onMouseEnter={() => {
                   setTooltipPos({ x: 100, y: 100 });
@@ -162,15 +163,15 @@ const CategoryDistribution: React.FC<CategoryDistributionProps> = ({ data }) => 
                       boxShadow: isSelected ? `0 0 12px ${color}` : "none",
                     }}
                   />
-                  <span className={`text-xs font-medium truncate transition-colors ${isSelected ? "text-white" : "text-zinc-400"}`}>
+                  <span className={`text-xs font-medium truncate transition-colors ${isSelected ? "text-slate-900 dark:text-white" : "text-slate-600 dark:text-zinc-400"}`}>
                     {item.category}
                   </span>
                 </div>
                 <div className="text-right pl-2 font-mono shrink-0">
-                  <span className="text-xs font-bold text-zinc-200 block">
+                  <span className="text-xs font-bold text-slate-900 dark:text-zinc-200 block">
                     {formatCurrency(item.amount)}
                   </span>
-                  <span className="text-[9px] font-medium text-zinc-500 block">
+                  <span className="text-[9px] font-medium text-slate-500 dark:text-zinc-500 block">
                     {pct}%
                   </span>
                 </div>

@@ -90,6 +90,7 @@ model categoryBudget {
 model AIInsight {
   id        String   @id @default(cuid())
   content   String
+  source    String
   createdAt DateTime @default(now())
 
   userId String

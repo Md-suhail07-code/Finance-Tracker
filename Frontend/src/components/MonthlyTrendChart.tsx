@@ -60,35 +60,35 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ data }) => {
       : "";
 
   return (
-    <div className="bg-zinc-950/40 backdrop-blur-3xl border border-white/5 rounded-2xl p-4 sm:p-6 shadow-[0_4px_24px_rgba(0,0,0,0.3)] relative">
+    <div className="bg-white/80 dark:bg-zinc-950/40 backdrop-blur-3xl border border-slate-200 dark:border-white/5 rounded-2xl p-4 sm:p-6 shadow-sm dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] relative">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-white">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
             Monthly Spending Trend
           </h2>
-          <p className="text-[10px] text-zinc-500 mt-0.5">
+          <p className="text-[10px] text-slate-500 dark:text-zinc-500 mt-0.5">
             Analysis of monthly expense flow
           </p>
         </div>
-        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
           <TrendingUp className="w-3.5 h-3.5" />
         </div>
       </div>
 
       <div className="relative w-full overflow-visible">
-        {/* White-Text Tooltip Card Overlay */}
+        {/* Tooltip Card Overlay */}
         {hoveredPoint && (
           <div
-            className="absolute z-30 bg-zinc-950 border border-white/10 p-2.5 rounded-xl shadow-2xl pointer-events-none transition-all duration-150 ease-out"
+            className="absolute z-30 bg-white dark:bg-zinc-950 border border-slate-200 dark:border-white/10 p-2.5 rounded-xl shadow-2xl pointer-events-none transition-all duration-150 ease-out"
             style={{
               left: `${(hoveredPoint.x / width) * 100}%`,
               top: `${hoveredPoint.y - 50}px`,
               transform: "translateX(-50%)",
             }}
           >
-            <div className="flex items-center gap-2 text-xs text-white">
-              <span className="text-zinc-400 font-semibold">{hoveredPoint.month}:</span>
-              <span className="font-mono font-bold text-white">
+            <div className="flex items-center gap-2 text-xs text-slate-900 dark:text-white">
+              <span className="text-slate-500 dark:text-zinc-400 font-semibold">{hoveredPoint.month}:</span>
+              <span className="font-mono font-bold text-slate-900 dark:text-white">
                 {formatCurrency(hoveredPoint.spent)}
               </span>
             </div>
@@ -102,7 +102,7 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ data }) => {
         >
           <defs>
             <linearGradient id="trendAreaGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#10b981" stopOpacity="0.15" />
+              <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
               <stop offset="100%" stopColor="#10b981" stopOpacity="0.00" />
             </linearGradient>
           </defs>
@@ -113,7 +113,8 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ data }) => {
             y1={height - paddingBottom}
             x2={width - paddingRight}
             y2={height - paddingBottom}
-            stroke="rgba(255, 255, 255, 0.05)"
+            stroke="currentColor"
+            className="text-slate-200 dark:text-white/5"
             strokeWidth="1"
           />
           <line
@@ -121,7 +122,8 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ data }) => {
             y1={paddingTop}
             x2={width - paddingRight}
             y2={paddingTop}
-            stroke="rgba(255, 255, 255, 0.02)"
+            stroke="currentColor"
+            className="text-slate-100 dark:text-white/[0.02]"
             strokeWidth="1"
             strokeDasharray="4 4"
           />
@@ -146,7 +148,6 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ data }) => {
                 const isHovered = hoveredPoint?.month === p.month;
                 return (
                   <g key={p.month} className="cursor-pointer">
-                    {/* Multi-layered vector hitboxes to facilitate hover captures on smartphones */}
                     <circle
                       cx={p.x}
                       cy={p.y}
@@ -160,10 +161,10 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ data }) => {
                       cx={p.x}
                       cy={p.y}
                       r={isHovered ? 5 : 3.5}
-                      fill={isHovered ? "#10b981" : "#09090b"}
+                      fill={isHovered ? "#10b981" : "currentColor"}
+                      className={`transition-all duration-150 pointer-events-none ${isHovered ? "" : "text-white dark:text-zinc-950"}`}
                       stroke="#10b981"
                       strokeWidth={isHovered ? 2.5 : 2}
-                      className="transition-all duration-150 pointer-events-none"
                     />
                   </g>
                 );
@@ -178,7 +179,7 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ data }) => {
             <span
               key={d.month}
               className={`text-[10px] font-medium tracking-tight transition-colors duration-150 ${
-                hoveredPoint?.month === d.month ? "text-emerald-400 font-bold" : "text-zinc-500"
+                hoveredPoint?.month === d.month ? "text-emerald-600 dark:text-emerald-400 font-bold" : "text-slate-500 dark:text-zinc-500"
               }`}
             >
               {d.month}
