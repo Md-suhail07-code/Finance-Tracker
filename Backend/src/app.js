@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 import authRoutes from "./routes/authRoute.js";
 import transactionRoutes from "./routes/transactionRoute.js";
 import categoryRoutes from "./routes/categoryRoute.js";
@@ -16,9 +17,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("Finance Tracker API is running");
-});
+app.use(express.static(path.join(path.resolve(), "public")));
+
 
 // Routes
 app.use("/api/auth", authRoutes);
