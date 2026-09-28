@@ -49,6 +49,7 @@ const Transactions: React.FC = () => {
   const [description, setDescription] = useState("");
 
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
   const [editAmount, setEditAmount] = useState("");
   const [editType, setEditType] = useState<"INCOME" | "EXPENSE">("EXPENSE");
   const [editCategoryId, setEditCategoryId] = useState("");
@@ -135,6 +136,7 @@ const Transactions: React.FC = () => {
       setError("");
 
       const res = await api.put(`/transactions/${id}`, {
+        title: editTitle || undefined,
         amount: parsedAmount,
         type: editType,
         categoryId: editCategoryId,
@@ -172,6 +174,7 @@ const Transactions: React.FC = () => {
   const startEditing = (transaction: Transaction) => {
     setError("");
     setEditingId(transaction.id);
+    setEditTitle(transaction.title ?? "");
     setEditAmount(String(transaction.amount));
     setEditType(transaction.type);
     setEditCategoryId(transaction.category?.id);
@@ -290,10 +293,7 @@ const Transactions: React.FC = () => {
                   required
                   className="block w-full px-4 py-3.5 bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/5 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition duration-200 font-medium appearance-none"
                 >
-                  <option
-                    value=""
-                    className="text-slate-400 dark:text-zinc-700"
-                  >
+                  <option value="" className="text-slate-400 dark:text-zinc-700">
                     Select Category
                   </option>
                   {categories.map((category) => (
@@ -404,12 +404,22 @@ const Transactions: React.FC = () => {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <input
+                            type="text"
+                            value={editTitle}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            className="bg-slate-50 dark:bg-black border border-slate-200 dark:border-white/5 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white"
+                            placeholder="Title"
+                          />
+                          <input
                             type="number"
                             value={editAmount}
                             onChange={(e) => setEditAmount(e.target.value)}
                             className="bg-slate-50 dark:bg-black border border-slate-200 dark:border-white/5 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white"
                             placeholder="Amount"
                           />
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           <select
                             value={editCategoryId}
                             onChange={(e) => setEditCategoryId(e.target.value)}
@@ -422,9 +432,6 @@ const Transactions: React.FC = () => {
                               </option>
                             ))}
                           </select>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <input
                             type="date"
                             value={editDate}
@@ -479,19 +486,14 @@ const Transactions: React.FC = () => {
                             )}
                           </div>
                           <div className="min-w-0">
-                            {/* Main Title */}
                             <h4 className="text-sm font-semibold text-slate-900 dark:text-white truncate">
                               {transaction.title || "Untitled Transaction"}
                             </h4>
-
-                            {/* Description */}
                             {transaction.description && (
                               <p className="text-xs text-slate-600 dark:text-zinc-400 mt-0.5 line-clamp-2">
                                 {transaction.description}
                               </p>
                             )}
-
-                            {/* Category & Date Metadata */}
                             <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-zinc-500 mt-1">
                               <span className="text-slate-600 dark:text-zinc-400 font-medium">
                                 {transaction.category?.name || "Unassigned"}
