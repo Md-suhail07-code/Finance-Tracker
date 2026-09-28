@@ -290,7 +290,10 @@ const Transactions: React.FC = () => {
                   required
                   className="block w-full px-4 py-3.5 bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/5 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition duration-200 font-medium appearance-none"
                 >
-                  <option value="" className="text-slate-400 dark:text-zinc-700">
+                  <option
+                    value=""
+                    className="text-slate-400 dark:text-zinc-700"
+                  >
                     Select Category
                   </option>
                   {categories.map((category) => (
@@ -476,12 +479,20 @@ const Transactions: React.FC = () => {
                             )}
                           </div>
                           <div className="min-w-0">
+                            {/* Main Title */}
                             <h4 className="text-sm font-semibold text-slate-900 dark:text-white truncate">
-                              {transaction.title ||
-                                transaction.description ||
-                                "No description"}
+                              {transaction.title || "Untitled Transaction"}
                             </h4>
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-zinc-500 mt-0.5">
+
+                            {/* Description */}
+                            {transaction.description && (
+                              <p className="text-xs text-slate-600 dark:text-zinc-400 mt-0.5 line-clamp-2">
+                                {transaction.description}
+                              </p>
+                            )}
+
+                            {/* Category & Date Metadata */}
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 dark:text-zinc-500 mt-1">
                               <span className="text-slate-600 dark:text-zinc-400 font-medium">
                                 {transaction.category?.name || "Unassigned"}
                               </span>

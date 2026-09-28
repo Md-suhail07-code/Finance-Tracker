@@ -9,6 +9,78 @@ The platform enables users to record income and expenses, organize transactions 
 
 Instead of functioning as a simple expense tracker, the application transforms financial data into meaningful insights. Users can visualize spending patterns, compare income and expenses, track budget utilization, identify high-spending categories, and understand their overall financial health.
 
+## Implemented Features
+
+- JWT-based signup, login, protected routes, and automatic logout when a session expires
+- Transaction, category, monthly budget, and category-budget management
+- Dashboard analytics for income, expenses, savings, trends, comparisons, category distribution, and budget performance
+- Financial health scoring and profile management
+- AI-generated financial insights through Google Gemini, with a rule-based fallback when Gemini is unavailable
+- Redux state management with persisted authentication and application data
+- Responsive interface with light and dark themes
+- PostgreSQL persistence through Prisma ORM and versioned database migrations
+- Dockerized deployment that builds the frontend and serves it from the backend container
+
+## Technology Stack
+
+- **Frontend:** React, TypeScript, Vite, Redux Toolkit, React Router, Tailwind CSS, shadcn/ui, Nivo, and Framer Motion
+- **Backend:** Node.js, Express, JavaScript, JWT, bcryptjs, and CORS
+- **Database:** PostgreSQL with Prisma ORM
+- **AI:** Google Gemini with an internal financial rule engine fallback
+- **Deployment:** Docker and Docker Hub
+
+## Environment Variables
+
+Create `Backend/.env` for local development. The backend requires:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DATABASE?schema=public"
+JWT_SECRET="replace-with-a-long-random-secret"
+GEMINI_API_KEY="replace-with-your-gemini-api-key"
+PORT=5000
+```
+
+Do not commit `.env` files. They are excluded from Docker build contexts by `.dockerignore`.
+
+## Run Locally
+
+Install dependencies in both application folders, then start the backend and frontend in separate terminals:
+
+```bash
+cd Backend
+npm install
+npx prisma migrate deploy
+npm run dev
+```
+
+```bash
+cd Frontend
+npm install
+npm run dev
+```
+
+The backend listens on `http://localhost:5000` and the Vite development server provides the frontend. The frontend API client currently targets `http://localhost:5000/api`.
+
+## Run with Docker
+
+Build from the repository root so the Dockerfile can access both `Frontend` and `Backend`:
+
+```bash
+docker build -t fintrack .
+docker run --env-file Backend/.env -p 5000:5000 fintrack
+```
+
+The Dockerfile uses a multi-stage build. The first stage builds the Vite frontend, and the second stage installs the backend, generates Prisma Client, copies the frontend build into `public`, and starts `server.js`. Open `http://localhost:5000` after the container starts.
+
+The container does not include PostgreSQL or run migrations automatically. `DATABASE_URL` must point to a PostgreSQL instance reachable from the container, and migrations should be applied with Prisma before using the application.
+
+The published image is available on Docker Hub:
+
+```bash
+docker pull suhail2005/fintrack:latest
+docker run --env-file Backend/.env -p 5000:5000 suhail2005/fintrack:latest
+```
+
 ## Workflow
 
 The application follows a structured financial management process:
