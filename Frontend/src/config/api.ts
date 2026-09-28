@@ -3,7 +3,7 @@ import { store } from "@/redux/app/store";
 import { logout } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
 
-export const API_BASE_URL: string = "http://localhost:5000/api";
+export const API_BASE_URL: string = "https://finance-tracker-backend-wz6r.onrender.com/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
