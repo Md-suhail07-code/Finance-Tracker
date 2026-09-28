@@ -29,18 +29,20 @@ app.use("/api/analytics", analyticRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/category-budgets", categoryBudgetRoutes);
 
-app.get("/keep-alive", (req, res) => {
-  res.send("Server is running");
-});
+// app.get("/keep-alive", (req, res) => {
+//   res.send("Server is running");
+// });
 
-setInterval(() => {
-  fetch("https://finance-tracker-backend-wz6r.onrender.com/keep-alive")
-  .then(() => {
-    console.log("Server is running");
-  })
-  .catch((err) => {
-    console.log("Server is not running");
-    });
-  }, 10 * 60 * 1000);
+// setInterval(() => {
+//   fetch("https://finance-tracker-backend-wz6r.onrender.com/keep-alive")
+//   .then(() => {
+//     console.log("Server is running");
+//   })
+//   .catch((err) => {
+//     console.log("Server is not running");
+//     });
+//   }, 10 * 60 * 1000);
+
+// No Need to use this route, as the server is being used continously by users, and the server is being kept alive automatically.
 
 export default app;
